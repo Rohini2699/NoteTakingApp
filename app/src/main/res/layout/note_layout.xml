@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardview"
+        app:cardElevation="8dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        app:cardCornerRadius="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                >
+
+                <ImageButton
+                    android:id="@+id/lowpriority"
+                    android:layout_height="30dp"
+                    android:layout_width="30dp"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:background="@drawable/baseline_low_priority_24"
+                    android:contentDescription="lowpriority"/>
+
+                <ImageButton
+                    android:id="@+id/highpriority"
+                    android:layout_height="30dp"
+                    android:layout_width="30dp"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:background="@drawable/baseline_priority_high_24"
+                    android:contentDescription="highpriority"/>
+
+                <ImageButton
+                    android:id="@+id/pin"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="5dp"
+                    android:visibility="gone"
+                    android:padding="8dp"
+                    android:background="@drawable/baseline_push_pin_24"
+                    android:contentDescription="pinname"
+                     />
+
+
+                <CheckBox
+                    android:id="@+id/button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:padding="10dp"
+                    android:src="@drawable/baseline_done_24"
+                    android:textColor="@color/black"
+                    app:layout_constraintDimensionRatio="1:1" />
+
+                <View
+                    android:id="@+id/card"
+                    android:layout_width="21dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:padding="10dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/notetitle"
+                android:layout_width="319dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="200"
+                android:layout_marginTop="10dp"
+                android:text="@string/notestitle"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="170dp"
+                android:id="@+id/description"
+                android:layout_marginRight="15dp"
+                android:text="@string/type_something"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                ></TextView>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

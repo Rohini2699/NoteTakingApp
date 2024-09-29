@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">NoteTakingApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name ="text_message"> No text notes to display here </string>
+    <string name="image">image</string>
+    <string name="your_notes">Your Notes</string>
+    <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="enter_your_description">Enter Your Description</string>
+    <string name="welcome_to_the_notes_app">Welcome to the Notes App</string>
+    <string name="this_is_the_image_displayed_when_the_notes_is_empty">This is the image displayed when the notes is empty</string>
+    <string name="enter_your_title_here">Enter your Title here</string>
+    <string name="enter_your_description_here">Enter your Description here</string>
+    <string name="update_notes">Update Notes</string>
+    <string name="search">Search</string>
+    <string name="notestitle">NotesTitle</string>
+    <string name="type_something">Type Something</string>
+</resources>
+

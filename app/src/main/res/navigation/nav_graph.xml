@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.notetakingapp.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_SecondaryFragment2"
+            app:destination="@id/SecondaryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_updateFragment"
+            app:destination="@id/updateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SecondaryFragment"
+        android:name="com.example.notetakingapp.view.NewNoteFragment"
+        android:label="fragment_SecondaryFragment"
+        tools:layout="@layout/fragment_secondaryfragment" >
+
+        <action
+            android:id="@+id/action_SecondaryFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.example.notetakingapp.view.UpdateFragment"
+        android:label="fragment_update"
+        tools:layout="@layout/fragment_update" >
+        <action
+            android:id="@+id/action_updateFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="notes"
+            app:argType="com.example.notetakingapp.room.Notes"
+            app:nullable="true"
+            />
+    </fragment>
+</navigation>

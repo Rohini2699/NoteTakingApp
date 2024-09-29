@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="pink">#F88379</color>
+    <color name="red">#c13b34</color>
+    <color name = "turquoise">#00BFAE</color>
+
+    <!--   Color for the app bar and other primary UI elements. -->
+        <color name="colorPrimary"> #F4A261</color>
+
+        <!--   A darker variant of the primary color, used for
+               the status bar (on Android 5.0+) and contextual app bars. -->
+        <color name="colorPrimaryDark">#2A9D8F</color>
+    <color name ="teal_500">#009688 </color>
+        <!--   a secondary color for controls like checkboxes and text fields. -->
+        <color name="colorAccent">#E9C46A</color>
+</resources>
