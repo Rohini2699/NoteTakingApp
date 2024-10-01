@@ -1,26 +1,21 @@
 package com.example.notetakingapp.view
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notetakingapp.R
-import com.example.notetakingapp.viewmodel.NoteViewModel
 import com.example.notetakingapp.databinding.NoteLayoutBinding
 import com.example.notetakingapp.room.Notes
 import com.example.notetakingapp.room.Priority
 import java.util.Random
 
-class CustomAdapter( private val notes: List<Notes> ,private val listener: NoteClickListener ):
+class CustomAdapter(private val notes: List<Notes> ,private val listener: NoteClickListener ):
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
                var currentSelectedIndex=-1
@@ -78,12 +73,10 @@ class CustomAdapter( private val notes: List<Notes> ,private val listener: NoteC
     // viewholder class is basically used for attatching the layout xml files
     //var currentSelectedIndex = -1
     //private var isLongClickTriggered = false
-    val differCallback = object : DiffUtil.ItemCallback<Notes>() {
+    private val differCallback = object : DiffUtil.ItemCallback<Notes>() {
         override fun areItemsTheSame(oldItem: Notes, newItem: Notes): Boolean {
             Log.d("DiffUtil", "Comparing items: ${oldItem.id} with ${newItem.id}")
-            return oldItem.id == newItem.id &&
-                    oldItem.description == newItem.description &&
-                    oldItem.title == newItem.title
+            return oldItem.id == newItem.id
             // it is used to update the contents without modifying the entire dataset .
         }
         override fun areContentsTheSame(oldItem: Notes, newItem: Notes): Boolean {
@@ -92,6 +85,7 @@ class CustomAdapter( private val notes: List<Notes> ,private val listener: NoteC
         }
     }
     val differ = AsyncListDiffer(this, differCallback)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         // val layoutInflater = LayoutInflater.from(parent.context)
         //   DataBindingUtil.inflate(layoutInflater, R.layout.card_item, parent, false)
@@ -102,6 +96,7 @@ class CustomAdapter( private val notes: List<Notes> ,private val listener: NoteC
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentNotes = differ.currentList[position]
         Log.d("NoteAdapter", "Binding note: ${currentNotes.title}, position: $position")
@@ -124,12 +119,12 @@ class CustomAdapter( private val notes: List<Notes> ,private val listener: NoteC
         holder.binding.card.setBackgroundColor(colors)
         if (currentNotes.isPinned)
         {
-            holder.binding.pin.visibility=View.VISIBLE
+            holder.binding.pin.visibility = View.VISIBLE
 
         }
         else
         {
-            holder.binding.pin.visibility=View.GONE
+            holder.binding.pin.visibility = View.GONE
         }
 
         if (currentNotes.priority==Priority.LOW)
@@ -158,12 +153,13 @@ class CustomAdapter( private val notes: List<Notes> ,private val listener: NoteC
 //           }
 //        }
 
-    fun handleSelectedNotes(notes: MutableList<Notes>? ){
-        notifyDataSetChanged()
-
-
+    fun handleSelectedNotes(notes: MutableList<Notes>? ) {
+        Log.d("IsPinned", "Size: ${notes?.size}")
+        notes?.forEach {
+            Log.d("IsPinned", "isPinned: ${it.isPinned}")
+        }
+        differ.submitList(notes)
     }
-
 }
 
 

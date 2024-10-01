@@ -55,8 +55,8 @@ class NoteViewModel( private val repo: NotesRepository) : ViewModel(), Observabl
         repo.delete(notes)
     }
     fun deselect() =viewModelScope.launch {
-
            repo.deselectall()
+        _selectctedNotesList.value = mutableListOf()
     }
      fun selectall() = viewModelScope.launch{
 
@@ -88,6 +88,7 @@ class NoteViewModel( private val repo: NotesRepository) : ViewModel(), Observabl
 
         val rowscount = repo.updateall()
         selectedcounttext.value = "$rowscount  items(s) selected"
+        _selectctedNotesList.value = users.value?.toMutableList() ?: mutableListOf()
     }
     fun updateselectedcount() {
 
@@ -131,11 +132,13 @@ class NoteViewModel( private val repo: NotesRepository) : ViewModel(), Observabl
 
     }
         fun pinSelectedNotes(){
+            Log.d("IsPinned", "Selected note Size: ${selectctedNotesList.value?.size}")
             val pinnotes = _selectctedNotesList.value ?:return
-            pinnotes.forEach{notes -> notes.isPinned=true
-             Log.d("pinnotes" ,"pinnotes: ${pinnotes.size}")
-            }
-            _selectctedNotesList.value=pinnotes
+//            pinnotes.forEach{ notes -> notes.isPinned = true
+//             Log.d("pinnotes" ,"pinnotes: ${pinnotes.size}")
+//            }
+            pinnotes.onEach { it.isPinned = true }
+            _selectctedNotesList.value = pinnotes
             val currNotes = users.value?.toMutableList() ?: return
             for (note in currNotes)
             {

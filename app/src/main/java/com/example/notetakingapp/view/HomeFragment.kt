@@ -1,6 +1,5 @@
 package com.example.notetakingapp.view
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -67,7 +66,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         //myViewModel.selectedlist.observe(viewLifecycleOwner){notes->noteAdapter .
         //differ.submitList(notes)}
         binding.canceltext.setOnClickListener {
-            binding.layout.visibility = View.GONE
+            binding.constraintSelectDeselect.visibility = View.GONE
             binding.bottomNavigationView.visibility = View.GONE
             binding.fbutton.visibility = View.VISIBLE
             myViewModel.resetSelectedList()
@@ -108,10 +107,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
     private fun observeSelectedNotes() {
         myViewModel.selectctedNotesList.observe(viewLifecycleOwner) { notes ->
-            noteAdapter.handleSelectedNotes(
-                notes
-            )
-
+            if (notes.isNotEmpty()) {
+                noteAdapter.handleSelectedNotes(notes)
+            }
         }
     }
 
@@ -199,16 +197,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     }
 
     override fun onLongClicked(position: Int, notes: Notes) {
-
         //myViewModel.markSelectedItem(position)
-        binding.layout.visibility = View.VISIBLE
+        binding.constraintSelectDeselect.visibility = View.VISIBLE
         binding.bottomNavigationView.visibility = View.VISIBLE
         binding.fbutton.visibility = View.GONE
         myViewModel.selectNoteAtIndex(position)
         myViewModel.updateselectedcount()
-
     }
-
 
 }
 /*

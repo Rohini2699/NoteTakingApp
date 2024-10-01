@@ -8,21 +8,10 @@
             name="homefragment"
             type="com.example.notetakingapp.viewmodel.NoteViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="136dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar3">
-        </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fbutton"
@@ -39,102 +28,100 @@
             app:srcCompat="@drawable/baseline_add_24" />
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar3"
+            android:id="@+id/home_toolbar"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="572dp"
+            android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintBottom_toTopOf="@+id/fbutton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:contentInsetStart="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome_to_the_notes_app"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textAlignment="center" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_select_deselect"
+            android:layout_width="0dp"
+            android:layout_height="85dp"
+            android:background="?attr/colorPrimary"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_toolbar">
+
+            <TextView
+                android:id="@+id/canceltext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:layout_editor_absoluteX="16dp">
+                android:background="@drawable/rounded_shape"
+                android:padding="8dp"
+                android:text="Cancel"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/selectedCountTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/welcome_to_the_notes_app"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="32sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/selectedCountTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginHorizontal="16dp"
+                android:text="@{String.valueOf(homefragment.selectedcounttext)}"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@id/selectall"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/canceltext"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout"
-                    android:layout_width="379dp"
-                    android:layout_height="86dp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title">
+            <TextView
+                android:id="@+id/selectall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_shape"
+                android:onClick="@{()->homefragment.selectall()}"
+                android:padding="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="@={homefragment.selectalltext}"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/selectedCountTextView"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
 
-                    <!-- Cancel TextView -->
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!-- Selected Count TextView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/constraint_select_deselect"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-                    <!-- Select All TextView -->
-
-
-                    <TextView
-                        android:id="@+id/canceltext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_shape"
-                        android:padding="8dp"
-                        android:text="Cancel"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintEnd_toStartOf="@+id/selectedCountTextView"
-                        app:layout_constraintHorizontal_bias="0.171"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/selectedCountTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="56dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@{String.valueOf(homefragment.selectedcounttext)}"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toEndOf="@id/canceltext"
-                        tools:ignore="MissingConstraints"
-                        tools:layout_editor_absoluteY="10dp" />
-
-                    <TextView
-                        android:id="@+id/selectall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/rounded_shape"
-                        android:onClick="@{()->homefragment.selectall()}"
-                        android:padding="8dp"
-                        android:text="@={homefragment.selectalltext}"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.697"
-                        app:layout_constraintStart_toEndOf="@id/selectedCountTextView"
-                        tools:ignore="MissingConstraints"
-                        tools:layout_editor_absoluteY="0dp" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.appcompat.widget.Toolbar>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/emptynotes"
@@ -157,6 +144,7 @@
                 android:textColor="@color/black"
                 android:textSize="28sp" />
         </androidx.cardview.widget.CardView>
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
