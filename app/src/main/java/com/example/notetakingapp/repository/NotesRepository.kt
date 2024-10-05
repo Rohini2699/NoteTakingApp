@@ -31,6 +31,4 @@ class NotesRepository (private val db:NotesDao) {
      }
 
     fun searchNote(query:String?)=db.searchNote(query)
-
-
 }

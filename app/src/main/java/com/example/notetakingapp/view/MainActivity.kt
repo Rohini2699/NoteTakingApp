@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         
         // establishing the connection between the database and the repository
         val dao = NotesDatabase.getInstance(applicationContext).db
-        val  notesRepository =NotesRepository(dao)
+        val  notesRepository = NotesRepository(dao)
         // establishing the connection between the viewmodel factory and the repository.
         val viewmodelFactory = ViewModelFactory(notesRepository)
         //establishing the connection between the viewmodel factory and the view model.

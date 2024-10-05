@@ -23,8 +23,8 @@ import com.example.notetakingapp.room.Priority
 import com.example.notetakingapp.viewmodel.NoteViewModel
 
 
-class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment) ,MenuProvider {
-   private  var _addNoteBinding: FragmentSecondaryfragmentBinding?=null
+class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvider {
+    private var _addNoteBinding: FragmentSecondaryfragmentBinding? = null
     private val binding get() = _addNoteBinding!! // Assertion operator
     private lateinit var myViewModel: NoteViewModel
     private lateinit var mView: View
@@ -33,6 +33,7 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment) ,MenuProvi
         super.onCreate(savedInstanceState)
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,12 +42,13 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment) ,MenuProvi
         _addNoteBinding = FragmentSecondaryfragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         myViewModel = (activity as MainActivity).myViewmodel
         mView = view
         val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(this,viewLifecycleOwner,Lifecycle.State.RESUMED)
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         binding.lottieAnimationView.apply {
             setAnimation("animation1.json") // Set the animation file
             View.VISIBLE
@@ -66,40 +68,45 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment) ,MenuProvi
         // and an optional Lifecycle.State (here, RESUMED) to indicate when
         // the menu should be visible
     }
-    private fun savenote(view:View) {
+
+    private fun savenote(view: View) {
         val noteTitle = binding.title.text.toString().trim()
         val notedescription = binding.description.text.toString().trim()
-        if(noteTitle.isNotEmpty())
-        {
-            val notes = Notes(0, noteTitle , notedescription ,isSelected = false , false, priority = null )
+        if (noteTitle.isNotEmpty()) {
+            val notes =
+                Notes(0, noteTitle, notedescription, isSelected = false, false)
             myViewModel.addNote(notes)
-            Toast.makeText(mView.context,"Notes saved Successfully " , Toast.LENGTH_SHORT).show()
-
-            view.findNavController().popBackStack(R.id.homeFragment , false)
-        }
-        else{
-            Toast.makeText(mView.context,"Please enter note title and note description " , Toast.LENGTH_SHORT ).show()
+            Toast.makeText(mView.context, "Notes saved Successfully ", Toast.LENGTH_SHORT).show()
+            view.findNavController().popBackStack(R.id.homeFragment, false)
+        } else {
+            Toast.makeText(
+                mView.context,
+                "Please enter note title and note description ",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-       menu.clear()
-        menuInflater.inflate(R.menu.menu_new_note , menu )
+        menu.clear()
+        menuInflater.inflate(R.menu.menu_new_note, menu)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        return when(menuItem.itemId) {
+        return when (menuItem.itemId) {
             R.id.menu_save -> {
                 savenote(mView)
 
                 true
             }
-            else->false
+
+            else -> false
         }
-        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        _addNoteBinding=null
+        _addNoteBinding = null
     }
 }
 

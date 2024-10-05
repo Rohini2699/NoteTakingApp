@@ -19,8 +19,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentUpdateBinding
 import com.example.notetakingapp.room.Notes
-import com.example.notetakingapp.room.Priority
 import com.example.notetakingapp.viewmodel.NoteViewModel
+
 /**
  * A simple [Fragment] subclass.
  * Use the [UpdateFragment.newInstance] factory method to
@@ -57,7 +57,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
             val title = binding.editNoteTitle.text.toString().trim()
             val body = binding.editNoteDesc.text.toString().trim()
             if (title.isNotEmpty()) {
-                val note = Notes(currentNote.id, title, body ,false, priority = null)
+                val note = Notes(currentNote.id, title, body ,false)
                 myViewModel.updateNotes(note)
                 view.findNavController().navigate(R.id.action_updateFragment_to_homeFragment)
             } else {
@@ -72,7 +72,6 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
             setPositiveButton("Delete") { _, _ ->
                 myViewModel.deleteNotes(currentNote)
                 view?.findNavController()?.navigate(R.id.action_updateFragment_to_homeFragment)
-
             }
             setNegativeButton("cancel", null)
         }.create().show()

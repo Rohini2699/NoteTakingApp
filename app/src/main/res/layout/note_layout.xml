@@ -41,6 +41,7 @@
                     android:layout_width="30dp"
                     android:padding="8dp"
                     android:visibility="gone"
+                    android:backgroundTint="@color/red"
                     android:background="@drawable/baseline_priority_high_24"
                     android:contentDescription="highpriority"/>
 

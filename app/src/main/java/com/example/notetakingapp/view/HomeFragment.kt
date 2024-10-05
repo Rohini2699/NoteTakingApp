@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
@@ -69,7 +70,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             binding.constraintSelectDeselect.visibility = View.GONE
             binding.bottomNavigationView.visibility = View.GONE
             binding.fbutton.visibility = View.VISIBLE
-            myViewModel.resetSelectedList()
+            myViewModel.removeSelection()
         }
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -106,15 +107,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     }
 
     private fun observeSelectedNotes() {
-        myViewModel.selectctedNotesList.observe(viewLifecycleOwner) { notes ->
-            if (notes.isNotEmpty()) {
-                noteAdapter.handleSelectedNotes(notes)
+        myViewModel.selectedNotesList.observe(viewLifecycleOwner) { notes ->
+            if (notes != null) {
+                if (notes.isNotEmpty()) {
+                    binding.constraintSelectDeselect.isVisible = true
+                    binding.bottomNavigationView.isVisible = true
+                    binding.fbutton.isVisible = false
+                } else {
+                    binding.constraintSelectDeselect.isVisible = false
+                    binding.bottomNavigationView.isVisible = false
+                    binding.fbutton.isVisible = true
+                }
             }
         }
     }
 
     private fun setUpRecyclerView() {
-
         noteAdapter = CustomAdapter(mutableListOf(), this)
         //Here, requireContext() ensures you're providing a non-null Context when creating your CustomAdapter.
         binding.recyclerView.apply {
@@ -126,12 +134,19 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             adapter = noteAdapter
         }
         activity?.let {
-            myViewModel.users.observe(viewLifecycleOwner, { notes ->
+            myViewModel.users.observe(viewLifecycleOwner) { notes ->
                 Log.d("NotesFragment", "Notes received: $notes")
+                notes?.let {
+                    myViewModel.setNotesList(notes)
+                }
+            }
+        }
+
+        activity?.let {
+            myViewModel.allNotes.observe(viewLifecycleOwner) { notes ->
                 noteAdapter.differ.submitList(notes)
                 updateUI(notes)
             }
-            )
         }
     }
 
@@ -185,11 +200,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
     override fun onItemClick(notes: Notes, view: View, isLongClick: Boolean) {
         if (isLongClick) {
-
             Log.d("ItemClick", "Long click detected")
         } else {
             view.post {
-
+                myViewModel.removeSelection()
                 val directions = HomeFragmentDirections.actionHomeFragmentToUpdateFragment(notes)
                 view.findNavController().navigate(directions)
             }
@@ -198,13 +212,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
     override fun onLongClicked(position: Int, notes: Notes) {
         //myViewModel.markSelectedItem(position)
-        binding.constraintSelectDeselect.visibility = View.VISIBLE
-        binding.bottomNavigationView.visibility = View.VISIBLE
-        binding.fbutton.visibility = View.GONE
+//        binding.constraintSelectDeselect.visibility = View.VISIBLE
+//        binding.bottomNavigationView.visibility = View.VISIBLE
+//        binding.fbutton.visibility = View.GONE
         myViewModel.selectNoteAtIndex(position)
-        myViewModel.updateselectedcount()
+//        myViewModel.updateselectedcount()
     }
-
 }
 /*
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

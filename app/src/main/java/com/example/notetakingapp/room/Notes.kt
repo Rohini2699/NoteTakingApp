@@ -22,8 +22,5 @@ data class Notes(
     @ColumnInfo(name = "isSelected")
     var isSelected:Boolean = false,
     var isPinned:Boolean=false,
-    var priority:Priority?=null // Default value for the priority .
-
-
-
+    var priority:Priority = Priority.LOW // Default value for the priority.
 ): Parcelable
