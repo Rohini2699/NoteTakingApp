@@ -7,20 +7,20 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 
-
-enum class  Priority{
-   HIGH,
-   LOW
+enum class Priority {
+    HIGH,
+    LOW
 }
-@Entity(tableName="Notes_table")
+
+@Entity(tableName = "Notes_table")
 @Parcelize
 data class Notes(
     @PrimaryKey(autoGenerate = true)
-    val id:Int,
-    var title:String?,
-    var description:String?,
+    val id: Int,
+    var title: String?,
+    var description: String?,
     @ColumnInfo(name = "isSelected")
-    var isSelected:Boolean = false,
-    var isPinned:Boolean=false,
-    var priority:Priority = Priority.LOW // Default value for the priority.
-): Parcelable
+    var isSelected: Boolean = false,
+    var isPinned: Boolean = false,
+    var priority: Priority? = null // Default value for the priority.
+) : Parcelable

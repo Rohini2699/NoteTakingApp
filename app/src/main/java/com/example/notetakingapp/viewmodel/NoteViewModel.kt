@@ -1,7 +1,6 @@
 package com.example.notetakingapp.viewmodel
 
 
-import android.provider.ContactsContract.CommonDataKinds.Note
 import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
@@ -68,6 +67,9 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
     fun deselect() = viewModelScope.launch {
         repo.deselectall()
         _selectedNotesList.value = mutableListOf()
+        val currentList = getCurrentList()
+        val newList = currentList.map { note -> note.copy(isSelected = true) }
+        _allNotesMutableList.value = newList
     }
 
     fun selectall() = viewModelScope.launch {
@@ -76,7 +78,8 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 
             // Perform update operation
             updatecount()
-            resetSelectedList()
+//            resetSelectedList()
+            updateAllNotesList()
             // pinSelectedNotes()
             // Change the value to "DeleteAll"
             selectalltext.value = "DeselectAll"
@@ -95,6 +98,12 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 //             deleteallnotes()
 //             selectalltext.value="SelectAll"
 //         }
+    }
+
+    private fun updateAllNotesList() {
+        val currentList = getCurrentList()
+        val newList = currentList.map { note -> note.copy(isSelected = true) }
+        _allNotesMutableList.value = newList
     }
 
     fun updatecount() = viewModelScope.launch {
@@ -207,7 +216,20 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
     }
 
     fun setPriorityForSelectedNotes(priority: Priority) {
-        // Update the priority of selected notes in _selectedNotesList
+        val currentList = getCurrentList()
+        if (currentList.isNotEmpty()) {
+            val newList = currentList.map {
+                if (it.isSelected) {
+                    it.copy(priority = priority)
+                } else {
+                    it
+                }
+            }
+            _allNotesMutableList.value = newList
+        }
+
+
+        /*// Update the priority of selected notes in _selectedNotesList
         val selectedNotes = _selectedNotesList.value ?: return
         val updatedSelectedNotes = selectedNotes.map { note ->
             if (note.isSelected) {
@@ -221,22 +243,19 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
         val currNotes = users.value?.toMutableList() ?: return
         val updatedNotes = currNotes.map { note ->
             if (note.isSelected) {
-
                 note.copy(priority = priority)  // Update priority for selected notes
             } else {
                 note  // Keep the other notes unchanged
             }
-
         }
 
-
         // Update the main list of notes
-        _mutableNotes.value = updatedNotes
+        _mutableNotes.value = updatedNotes*/
     }
 
     // This method will filter notes based on the selected priority
     fun filterNotesByPriority(priority: Priority) {
-        val currNotes = users.value?.toMutableList() ?: return
+        val currNotes = getCurrentList()
         val filteredNotes = currNotes.filter { it.priority == priority }
 
         // Update the filtered list in LiveData so the UI can show only the filtered notes

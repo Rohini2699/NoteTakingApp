@@ -127,15 +127,17 @@ class CustomAdapter(private val notes: List<Notes>, private val listener: NoteCl
             holder.binding.pin.visibility = View.GONE
         }
 
-        if (currentNotes.priority == Priority.LOW) {
-            holder.binding.lowpriority.visibility = View.VISIBLE
-            holder.binding.highpriority.visibility = View.GONE
-        } else {
-            holder.binding.highpriority.visibility = View.VISIBLE
-            holder.binding.lowpriority.visibility = View.GONE
+        if (currentNotes.priority != null) {
+            if (currentNotes.priority == Priority.LOW) {
+                holder.binding.lowpriority.visibility = View.VISIBLE
+                holder.binding.highpriority.visibility = View.GONE
+            } else {
+                holder.binding.highpriority.visibility = View.VISIBLE
+                holder.binding.lowpriority.visibility = View.GONE
+            }
         }
-
     }
+
 //    fun markselecteditem(index: Int): Boolean {
 //            val selectedItem = differ.currentList[index]
 //            selectedItem.isSelected=!selectedItem.isSelected
