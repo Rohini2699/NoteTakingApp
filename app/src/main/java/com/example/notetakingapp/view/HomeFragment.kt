@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -30,6 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private val binding get() = _binding!! // Assertion operator
     private lateinit var myViewModel: NoteViewModel
     private lateinit var noteAdapter: CustomAdapter
+    private var ispinned:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,11 +79,21 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                 R.id.action_pin -> {
                     // Handle Home click here
                     myViewModel.pinSelectedNotes()
+                    menuItem.setIcon(if(ispinned ) R.drawable.baseline_push_pin_24 else R.drawable.unpin)
+                    ispinned=!ispinned
                     true
                 }
 
-                R.id.action_security -> {
+                R.id.action_deleteall -> {
                     // Handle Search click here
+                    AlertDialog.Builder(requireContext()).apply {
+                        setTitle("Delete Note ")
+                        setMessage("You want to delete the selected notes ")
+                        setPositiveButton("Delete") { _, _ ->
+                            myViewModel.deleteNotesById()
+                        }
+                        setNegativeButton("cancel", null)
+                    }.create().show()
                     true
                 }
 
@@ -155,6 +167,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             if (note.isEmpty()) {
                 binding.emptynotes.visibility = View.VISIBLE
                 binding.recyclerView.visibility = View.GONE
+                binding.constraintSelectDeselect.isVisible=false
             } else {
                 binding.emptynotes.visibility = View.GONE
                 binding.recyclerView.visibility = View.VISIBLE
