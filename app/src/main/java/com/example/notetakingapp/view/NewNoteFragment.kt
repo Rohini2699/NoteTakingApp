@@ -96,7 +96,6 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
         return when (menuItem.itemId) {
             R.id.menu_save -> {
                 savenote(mView)
-
                 true
             }
 

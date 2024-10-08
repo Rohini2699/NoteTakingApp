@@ -1,6 +1,9 @@
 package com.example.notetakingapp.view
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -9,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -20,6 +24,7 @@ import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentUpdateBinding
 import com.example.notetakingapp.room.Notes
 import com.example.notetakingapp.viewmodel.NoteViewModel
+import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
@@ -76,11 +81,42 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
             setNegativeButton("cancel", null)
         }.create().show()
     }
+    private fun voiceInput() {
+        //language e.g. "en" for "English", "ur" for "Urdu", "hi" for "Hindi" etc.
+        // val language = "en"
+
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text")
+
+        try {
+            voiceInputArl.launch(intent)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val voiceInputArl = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { activityResult ->
+        if (activityResult.resultCode == RESULT_OK) {
+            val result = activityResult.data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+
+            val text = result!![0]
+
+            binding.editNoteDesc.append(text)
+        }
+    }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
         _binding=null
     }
+
+
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menu.clear()
         menuInflater.inflate(R.menu.menu_update_note , menu )
@@ -91,6 +127,10 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
         {
             R.id.menu_delete ->{
                 deleteNote()
+                true
+            }
+            R.id.menu_mic->{
+                voiceInput()
                 true
             }
             else->false
