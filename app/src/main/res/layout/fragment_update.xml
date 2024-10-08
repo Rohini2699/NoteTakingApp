@@ -21,18 +21,43 @@
             android:textColor="@color/red"
             android:textSize="24sp" />
 
+        <TextView
+            android:id="@+id/datetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editNoteHeading"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Date"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/timetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editNoteHeading"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="81dp"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@id/datetext"
+            android:text="Time"
+            android:textSize="20sp" />
+
+
+
+
         <EditText
             android:id="@+id/editNoteTitle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:hint="Enter the title"
-            android:padding="12dp"
-            android:textSize="20sp"
             android:layout_below="@id/editNoteHeading"
+            android:layout_marginTop="49dp"
             android:background="@drawable/rounded_shape"
-            android:layout_marginTop="16dp"
-            android:maxLines="1"></EditText>
-
+            android:hint="Enter the title"
+            android:maxLines="1"
+            android:padding="12dp"
+            android:textSize="20sp"></EditText>
 
         <EditText
             android:id="@+id/editNoteDesc"
@@ -44,8 +69,18 @@
             android:textSize="18sp"
            android:background="@drawable/rounded_shape"
             android:layout_below="@id/editNoteTitle"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12dp">
+        </EditText>
 
+      <ImageView
+          android:id="@+id/image"
+         android:layout_width="0dp"
+          android:layout_height="100dp"
+          android:layout_alignBaseline="@id/editNoteDesc"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          android:layout_marginEnd="16dp"
+          />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editNoteFab"
             android:layout_width="wrap_content"

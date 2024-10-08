@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuHost
@@ -24,6 +25,9 @@ import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentUpdateBinding
 import com.example.notetakingapp.room.Notes
 import com.example.notetakingapp.viewmodel.NoteViewModel
+import com.google.android.material.timepicker.TimeFormat
+import java.text.DateFormat
+import java.util.Calendar
 import java.util.Locale
 
 /**
@@ -36,8 +40,11 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
     private val binding get() = _binding!! // Assertion operator
     private lateinit var myViewModel: NoteViewModel
     private lateinit var currentNote: Notes
+
+    //val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent())
     //Since the update note fragment contains arguments in nav _graph
     private val args: UpdateFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,10 +52,18 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
         // Inflate the layout for this fragment
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
         return binding.root
-    }
 
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val calendar = Calendar.getInstance().time
+        val dateFormat =DateFormat.getDateInstance(DateFormat.FULL).format(calendar)
+        val timeFormat = DateFormat.getTimeInstance().format(calendar)
+
+        binding.datetext.text =dateFormat
+        binding.timetext.text=timeFormat
+
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this,viewLifecycleOwner, Lifecycle.State.RESUMED)
         myViewModel = (activity as MainActivity).myViewmodel
@@ -81,6 +96,18 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
             setNegativeButton("cancel", null)
         }.create().show()
     }
+
+        val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
+            val galleryUri = it
+            try{
+                binding.image.setImageURI(galleryUri)
+
+               }catch(e:Exception){
+                e.printStackTrace()
+            }
+
+        }
+
     private fun voiceInput() {
         //language e.g. "en" for "English", "ur" for "Urdu", "hi" for "Hindi" etc.
         // val language = "en"
@@ -109,8 +136,6 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
         }
     }
 
-
-
     override fun onDestroy() {
         super.onDestroy()
         _binding=null
@@ -132,6 +157,12 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
             R.id.menu_mic->{
                 voiceInput()
                 true
+            }
+            R.id.menu_image->
+            {
+                    galleryLauncher.launch("image/*")
+
+               true
             }
             else->false
         }

@@ -103,6 +103,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                     myViewModel.filterNotesByPriority(Priority.LOW)
                     myViewModel.setPriorityForSelectedNotes(Priority.LOW)
 
+
                     true
                 }
 
