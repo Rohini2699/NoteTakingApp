@@ -24,6 +24,8 @@ import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentUpdateBinding
 import com.example.notetakingapp.room.Notes
 import com.example.notetakingapp.viewmodel.NoteViewModel
+import java.text.DateFormat
+import java.util.Calendar
 import java.util.Locale
 
 /**
@@ -49,6 +51,12 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val calendar = Calendar.getInstance().time
+        val dateFormat = DateFormat.getDateInstance(DateFormat.FULL).format(calendar)
+        val timeFormat = DateFormat.getTimeInstance().format(calendar)
+
+        binding.datetext.text =dateFormat
+        binding.timetext.text=timeFormat
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this,viewLifecycleOwner, Lifecycle.State.RESUMED)
         myViewModel = (activity as MainActivity).myViewmodel

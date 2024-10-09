@@ -20,6 +20,29 @@
             android:textStyle="bold"
             android:textColor="@color/red"
             android:textSize="24sp" />
+        <TextView
+            android:id="@+id/datetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editNoteHeading"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Date"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/timetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editNoteHeading"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="81dp"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@id/datetext"
+            android:text="Time"
+            android:textSize="20sp" />
+
 
         <EditText
             android:id="@+id/editNoteTitle"
