@@ -74,7 +74,7 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
         val notedescription = binding.description.text.toString().trim()
         if (noteTitle.isNotEmpty()) {
             val notes =
-                Notes(0, noteTitle, notedescription, isSelected = false, false)
+                Notes(0, noteTitle, notedescription, isSelected = false, false , (System.currentTimeMillis()).toString())
             myViewModel.addNote(notes)
             Toast.makeText(mView.context, "Notes saved Successfully ", Toast.LENGTH_SHORT).show()
             view.findNavController().popBackStack(R.id.homeFragment, false)

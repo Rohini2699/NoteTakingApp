@@ -13,5 +13,11 @@
         android:icon="@drawable/baseline_mic_24"
         app:showAsAction="always">
     </item>
+    <item
+        android:id="@+id/menu_image"
+        android:title=""
+        android:icon="@drawable/galleryimage"
+        app:showAsAction="always">
+    </item>
 
 </menu>
