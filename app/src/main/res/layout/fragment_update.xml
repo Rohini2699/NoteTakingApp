@@ -60,7 +60,7 @@
 
       <ImageView
           android:id="@+id/image"
-         android:layout_width="0dp"
+         android:layout_width="100dp"
           android:layout_height="100dp"
           android:layout_alignBaseline="@id/editNoteDesc"
           android:layout_marginStart="16dp"
