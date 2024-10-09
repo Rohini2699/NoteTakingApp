@@ -1,4 +1,8 @@
-package com.example.notetakingapp.view
+package com.example.notetak
+
+import androidx.core.view.isVisible
+
+
 
 import android.graphics.Color
 import android.util.Log
@@ -13,9 +17,12 @@ import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.NoteLayoutBinding
 import com.example.notetakingapp.room.Notes
 import com.example.notetakingapp.room.Priority
+import com.example.notetakingapp.util.Utils.convertMillisToLocalDateTime
+import com.example.notetakingapp.util.Utils.formatLocalDateTimeWithZoneId
+import java.time.ZoneId
 import java.util.Random
 
-class CustomAdapter(private val notes: List<Notes>, private val listener: NoteClickListener) :
+class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteClickListener) :
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
     var currentSelectedIndex = -1
@@ -54,6 +61,20 @@ class CustomAdapter(private val notes: List<Notes>, private val listener: NoteCl
             binding.notetitle.text = notes.title
             binding.description.text = notes.description
             binding.button.isChecked = notes.isSelected
+
+                if(notes.date?.isNotEmpty()==true)
+            {
+                val localDateTime = convertMillisToLocalDateTime(notes.date.orEmpty().toLong())
+                println(localDateTime)
+                val formateddate = formatLocalDateTimeWithZoneId(localDateTime , zoneId = ZoneId.systemDefault())
+                Log.d("formated date" ,"date : $formateddate" )
+                binding.datetext.text=formateddate
+            }
+            else
+                {
+                    binding.datetext.isVisible=false
+                }
+            //binding.datetext.text =
             binding.cardview.setOnClickListener {
                 listener.onItemClick(notes, binding.cardview, false)
             }

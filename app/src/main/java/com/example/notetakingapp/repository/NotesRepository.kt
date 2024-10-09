@@ -29,6 +29,9 @@ class NotesRepository (private val db:NotesDao) {
     suspend fun deselectall(){
          return db.deselectall()
      }
+    suspend fun deleteNotesById(id:Int){
+        return db.deleteNotesById(id)
+    }
 
     fun searchNote(query:String?)=db.searchNote(query)
 }

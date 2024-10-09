@@ -12,20 +12,18 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        app:cardCornerRadius="10dp"
-        >
+        app:cardCornerRadius="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp">
             <LinearLayout
+                android:id="@id/layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_gravity="end"
-                >
-
+                android:layout_gravity="end">
                 <ImageButton
                     android:id="@+id/lowpriority"
                     android:layout_height="30dp"
@@ -55,8 +53,6 @@
                     android:background="@drawable/baseline_push_pin_24"
                     android:contentDescription="pinname"
                      />
-
-
                 <CheckBox
                     android:id="@+id/button"
                     android:layout_width="30dp"
@@ -68,7 +64,6 @@
                     android:src="@drawable/baseline_done_24"
                     android:textColor="@color/black"
                     app:layout_constraintDimensionRatio="1:1" />
-
                 <View
                     android:id="@+id/card"
                     android:layout_width="21dp"
@@ -84,7 +79,6 @@
                 android:layout_height="25dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="200"
-                android:layout_marginTop="10dp"
                 android:text="@string/notestitle"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -100,6 +94,16 @@
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 ></TextView>
+            <TextView
+                android:id="@+id/datetext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Date"
+                android:textSize="12sp"
+                />
 
         </LinearLayout>
 

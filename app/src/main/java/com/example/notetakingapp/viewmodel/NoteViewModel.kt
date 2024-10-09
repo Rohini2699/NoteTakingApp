@@ -189,13 +189,21 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
         val currentList = getCurrentList()
         val newList = currentList.map { note ->
             if (note.isSelected) {
-                Log.d("SelectedNotes", "IF Block: ")
-                note.copy(isPinned = true)
+                if(note.isPinned) {
+                    Log.d("SelectedNotes", "IF Block: ")
+                    note.copy(isPinned = false)
+                }
+                else
+                {
+                    note.copy(isPinned = true)
+                }
+
             } else {
                 Log.d("SelectedNotes", "Else Block: ")
                 note
             }
         }
+
         _allNotesMutableList.value = newList
         Log.d("CurrentListSize", "Pinned List Size: ${newList}")
 
@@ -213,6 +221,21 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 //                println("Unselected Note: ${note.title}")
 //            }
 //        }
+    }
+    fun deleteNotesById(){
+        viewModelScope.launch {
+            val selectedNotes = selectedNotesList.value
+            selectedNotes?.map {
+                    notes-> repo.deleteNotesById(notes.id)
+                val currentList = getCurrentList().toMutableList()
+                currentList.removeIf { it.id == notes.id }
+                _allNotesMutableList .value=currentList
+
+            }
+            updatecount()
+
+
+        }
     }
 
     fun setPriorityForSelectedNotes(priority: Priority) {

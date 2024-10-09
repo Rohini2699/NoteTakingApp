@@ -16,6 +16,9 @@ interface NotesDao {
     suspend fun updatenotes(notes: Notes)
     @Delete
     suspend fun deletenotes(notes: Notes)
+
+    @Query("DELETE FROM Notes_table WHERE id =:id ")
+    suspend fun deleteNotesById(id:Int)
     //////////////////////////
     @Query("UPDATE Notes_table SET isSelected = 0")
     suspend fun deselectall()

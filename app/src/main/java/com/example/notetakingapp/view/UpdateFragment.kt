@@ -1,14 +1,20 @@
 package com.example.notetakingapp.view
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
+
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -19,7 +25,18 @@ import androidx.navigation.fragment.navArgs
 import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentUpdateBinding
 import com.example.notetakingapp.room.Notes
+import com.example.notetakingapp.util.Utils.convertMillisToLocalDateTime
+import com.example.notetakingapp.util.Utils.formatLocalDateTimeWithZoneId
 import com.example.notetakingapp.viewmodel.NoteViewModel
+import com.google.android.material.timepicker.TimeFormat
+import java.text.DateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
@@ -31,8 +48,11 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
     private val binding get() = _binding!! // Assertion operator
     private lateinit var myViewModel: NoteViewModel
     private lateinit var currentNote: Notes
+
+    //val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent())
     //Since the update note fragment contains arguments in nav _graph
     private val args: UpdateFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,15 +60,48 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
         // Inflate the layout for this fragment
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
         return binding.root
-    }
 
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+         val calendar = Calendar.getInstance()
+//        val dateFormat =DateFormat.getDateInstance(DateFormat.FULL).format(calendar)
+//        val timeFormat = DateFormat.getTimeInstance().format(calendar)
+//
+//         binding.datetext.text =dateFormat
+//        binding.timetext.text=timeFormat
+
+
+//        val noteFromDatabase = database.noteDao().getNoteById(id)
+//        val date = Date(currentNote.date)  // Converting the timestamp back to a Date object
+
+// Format and display the date
+
+
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this,viewLifecycleOwner, Lifecycle.State.RESUMED)
         myViewModel = (activity as MainActivity).myViewmodel
         Log.d("UpdateFragment", "Arguments: ${args.notes}")
         currentNote = args.notes!!
+        val noteDate = currentNote.date.orEmpty()
+      //  Log.d("notedate" ,"notedate" ,noteDate)
+        // it will check the nullability
+
+
+// Usage
+
+        if(noteDate .isNotEmpty())
+        {
+            val localDateTime = convertMillisToLocalDateTime(noteDate.toLong())
+            println(localDateTime)
+            val formateddate = formatLocalDateTimeWithZoneId(localDateTime , zoneId = ZoneId.systemDefault())
+            Log.d("formated date" ,"date : $formateddate" )
+             binding.datetext.text=formateddate
+
+        }
+
+
         binding.editNoteTitle.setText(currentNote.title)
         binding.editNoteDesc.setText(currentNote.description)
 
@@ -57,7 +110,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
             val title = binding.editNoteTitle.text.toString().trim()
             val body = binding.editNoteDesc.text.toString().trim()
             if (title.isNotEmpty()) {
-                val note = Notes(currentNote.id, title, body ,false)
+                val note = Notes(currentNote.id, title, body , currentNote.isSelected , currentNote.isPinned, (System.currentTimeMillis()).toString())
                 myViewModel.updateNotes(note)
                 view.findNavController().navigate(R.id.action_updateFragment_to_homeFragment)
             } else {
@@ -77,10 +130,56 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
         }.create().show()
     }
 
+        val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
+            val galleryUri = it
+            try{
+                binding.image.setImageURI(galleryUri)
+
+               }catch(e:Exception){
+                e.printStackTrace()
+            }
+
+        }
+
+    private fun voiceInput() {
+        //language e.g. "en" for "English", "ur" for "Urdu", "hi" for "Hindi" etc.
+        // val language = "en"
+
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text")
+
+        try {
+            voiceInputArl.launch(intent)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val voiceInputArl = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { activityResult ->
+        if (activityResult.resultCode == RESULT_OK) {
+            val result = activityResult.data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+
+            val text = result!![0]
+
+            binding.editNoteDesc.append(text)
+        }
+    }
+
+
+
+
+
+
     override fun onDestroy() {
         super.onDestroy()
         _binding=null
     }
+
+
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menu.clear()
         menuInflater.inflate(R.menu.menu_update_note , menu )
@@ -92,6 +191,16 @@ class UpdateFragment : Fragment(R.layout.fragment_update) ,MenuProvider {
             R.id.menu_delete ->{
                 deleteNote()
                 true
+            }
+            R.id.menu_mic->{
+                voiceInput()
+                true
+            }
+            R.id.menu_image->
+            {
+                    galleryLauncher.launch("image/*")
+
+               true
             }
             else->false
         }
