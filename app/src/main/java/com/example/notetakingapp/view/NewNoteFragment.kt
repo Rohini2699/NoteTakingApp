@@ -1,5 +1,6 @@
 package com.example.notetakingapp.view
 
+import android.animation.Animator
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import com.example.notetakingapp.R
@@ -49,9 +51,10 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
         mView = view
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        binding.lottieAnimationView.apply {
+
+        /*binding.lottieAnimationView.apply {
             setAnimation("animation1.json") // Set the animation file
-            View.VISIBLE
+            isVisible = true
             playAnimation() // Start the animation
 
             // Pause the animation after 3 seconds
@@ -61,7 +64,19 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
                     visibility = View.GONE // Hide the view if needed
                 }
             }, 2000) // 3000 milliseconds = 3 seconds
-        }
+        }*/
+
+        binding.lottieAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(p0: Animator) {}
+
+            override fun onAnimationEnd(p0: Animator) {
+                binding.lottieAnimationView.isVisible = false
+            }
+
+            override fun onAnimationCancel(p0: Animator) {}
+
+            override fun onAnimationRepeat(p0: Animator) {}
+        })
 
         // Add menu items without using the Fragment Menu APIs
         // Note how we can tie the MenuProvider to the viewLifecycleOwner
