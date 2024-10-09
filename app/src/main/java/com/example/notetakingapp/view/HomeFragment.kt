@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.notetak.CustomAdapter
 import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentHomeBinding
 import com.example.notetakingapp.room.Notes
