@@ -233,8 +233,6 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 
             }
             updatecount()
-
-
         }
     }
 
@@ -242,8 +240,9 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
         val currentList = getCurrentList()
         if (currentList.isNotEmpty()) {
             val newList = currentList.map {
-                if (it.isSelected) {
-                    it.copy(priority = priority)
+                if (it.isSelected ) {
+
+                    it.copy(priority = priority , isHighPriorityVisible = !it.isHighPriorityVisible)
                 } else {
                     it
                 }

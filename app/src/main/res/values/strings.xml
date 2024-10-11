@@ -2,7 +2,7 @@
     <string name="app_name">NoteTakingApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name ="text_message"> No text notes to display here </string>
+    <string name="text_message"> No text notes to display here </string>
     <string name="image">image</string>
     <string name="your_notes">Your Notes</string>
     <string name="save">Save</string>

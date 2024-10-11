@@ -34,6 +34,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private lateinit var noteAdapter: CustomAdapter
     private var ispinned:Boolean = false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -74,6 +75,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             binding.bottomNavigationView.visibility = View.GONE
             binding.fbutton.visibility = View.VISIBLE
             myViewModel.removeSelection()
+
         }
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -100,7 +102,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
                 R.id.action_lowpriority -> {
 
-                    // Handle Notifications click here
+                    // Handles low priority  clicks here
                     myViewModel.filterNotesByPriority(Priority.LOW)
                     myViewModel.setPriorityForSelectedNotes(Priority.LOW)
 
@@ -109,8 +111,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                 }
 
                 R.id.action_highpriority -> {
-                    // Handle Settings click here
-                    myViewModel.setPriorityForSelectedNotes(Priority.HIGH)
+                    // Handle priority clicks here
+
+                    myViewModel.filterNotesByPriority(Priority.HIGH)
                     myViewModel.setPriorityForSelectedNotes(Priority.HIGH)
                     true
                 }

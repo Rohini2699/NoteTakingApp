@@ -1,5 +1,6 @@
 package com.example.notetak
 
+import android.annotation.SuppressLint
 import androidx.core.view.isVisible
 
 
@@ -25,8 +26,7 @@ import java.util.Random
 class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteClickListener) :
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
-    var currentSelectedIndex = -1
-    var hasSelectedAll = false
+    //private var isHighPriorityVisible = false
 
     interface NoteClickListener {
         fun onItemClick(notes: Notes, v: View, isLongClick: Boolean)
@@ -56,20 +56,20 @@ class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteC
 //            }
 //            return false
 //        }
+        @SuppressLint("SuspiciousIndentation")
         fun bind(notes: Notes, position: Int) {
 //            currentNotes = notes
             binding.notetitle.text = notes.title
             binding.description.text = notes.description
             binding.button.isChecked = notes.isSelected
-
-                if(notes.date?.isNotEmpty()==true)
-            {
+                    if(notes.date?.isNotEmpty()==true)
+                     {
                 val localDateTime = convertMillisToLocalDateTime(notes.date.orEmpty().toLong())
                 println(localDateTime)
                 val formateddate = formatLocalDateTimeWithZoneId(localDateTime , zoneId = ZoneId.systemDefault())
                 Log.d("formated date" ,"date : $formateddate" )
                 binding.datetext.text=formateddate
-            }
+                     }
             else
                 {
                     binding.datetext.isVisible=false
@@ -125,7 +125,10 @@ class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteC
         val currentNotes = differ.currentList[position]
 //        Log.d("NoteAdapter", "Binding note: ${currentNotes.title}, position: $position")
 //        Log.d("NoteAdapter", "Binding note is pin : ${currentNotes.isPinned}, position: $position")
-        Log.d("NoteAdapter", "Binding note is selected : ${currentNotes.isSelected}, position: $position")
+        Log.d(
+            "NoteAdapter",
+            "Binding note is selected : ${currentNotes.isSelected}, position: $position"
+        )
         holder.bind(currentNotes, position)
         if (currentNotes.isSelected) {
             holder.binding.button.visibility = View.VISIBLE
@@ -149,13 +152,26 @@ class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteC
         }
 
         if (currentNotes.priority != null) {
-            if (currentNotes.priority == Priority.LOW) {
-                holder.binding.lowpriority.visibility = View.VISIBLE
-                holder.binding.highpriority.visibility = View.GONE
-            } else {
-                holder.binding.highpriority.visibility = View.VISIBLE
-                holder.binding.lowpriority.visibility = View.GONE
-            }
+
+                if (!currentNotes.isHighPriorityVisible) {
+
+                    //holder.binding.lowpriority.visibility = View.GONE
+                    holder.binding.highpriority.visibility = View.VISIBLE
+                    currentNotes.isHighPriorityVisible = true
+                    Log.d("priorityvisible1", "priority: ${currentNotes.isHighPriorityVisible}")
+
+
+                } else {
+
+                    holder.binding.highpriority.visibility = View.GONE
+                    currentNotes.isHighPriorityVisible=false
+
+                    //holder.binding.lowpriority.visibility = View.GO
+                   // isHighPriorityVisible = false
+                    Log.d("priorityvisible", "priority: ${currentNotes.isHighPriorityVisible}")
+                }
+
+
         }
     }
 

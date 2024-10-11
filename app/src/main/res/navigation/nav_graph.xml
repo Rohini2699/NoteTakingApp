@@ -41,4 +41,13 @@
             app:nullable="true"
             />
     </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragmet"
+        android:name="com.example.notetakingapp.onBoardingFragmet"
+        android:label="fragment_on_boarding_fragmet"
+        tools:layout="@layout/fragment_on_boarding_fragmet" >
+        <action
+            android:id="@+id/onboard"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

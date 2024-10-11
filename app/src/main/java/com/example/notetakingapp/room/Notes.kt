@@ -25,5 +25,6 @@ data class Notes(
     var isSelected: Boolean = false,
     var isPinned: Boolean = false,
     val date:String?, // storing date as a time stamp
-    var priority: Priority? = null // Default value for the priority.
+    var priority: Priority? = null , // Default value for the priority.
+    var isHighPriorityVisible: Boolean = false
 ) : Parcelable

@@ -2,6 +2,7 @@ package com.example.notetakingapp.view
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.view.LayoutInflater
@@ -26,6 +27,8 @@ import com.example.notetakingapp.room.Notes
 import com.example.notetakingapp.util.Utils.convertMillisToLocalDateTime
 import com.example.notetakingapp.util.Utils.formatLocalDateTimeWithZoneId
 import com.example.notetakingapp.viewmodel.NoteViewModel
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.time.ZoneId
 import java.util.Locale
 
@@ -51,7 +54,6 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val menuHost: MenuHost = requireActivity()
@@ -69,7 +71,6 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
             )
             binding.datetext.text = formattedDate
         }
-
         binding.editNoteTitle.setText(currentNote.title)
         binding.editNoteDesc.setText(currentNote.description)
 
@@ -109,6 +110,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { galleryUri ->
         if (galleryUri != null) {
             binding.image.setImageURI(galleryUri)
+           // compressBitmapToByteArray()
         } else {
             binding.image.isVisible = false
         }
@@ -145,7 +147,26 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
             binding.editNoteDesc.append(text)
         }
     }
+    fun compressBitmapToByteArray(originalBitmap: Bitmap, maxBytes: Long = 1_000_000): ByteArray {
+        // Initialize the quality variable and the output stream
+        var quality = 100
+        var byteArrayOutputStream: ByteArrayOutputStream
 
+        do {
+            // Reset the stream for each attempt at a different quality level
+            byteArrayOutputStream = ByteArrayOutputStream()
+
+            // Compress the bitmap into the ByteArrayOutputStream at the current quality
+            originalBitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
+
+            // Reduce the quality for the next iteration if the current size exceeds maxBytes
+            quality -= 5
+
+        } while (byteArrayOutputStream.size() > maxBytes && quality > 0)
+
+        // Return the byte array representing the compressed bitmap
+        return byteArrayOutputStream.toByteArray()
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
