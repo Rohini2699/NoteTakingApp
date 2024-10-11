@@ -6,16 +6,17 @@ import androidx.fragment.app.ListFragment
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewPageAdapter (list: ArrayList<Fragment> ,fragmentManager: FragmentManager ,lifecycle: Lifecycle):FragmentStateAdapter(fragmentManager,lifecycle) {
-    private val fragmentList=list
-    override fun getItemCount(): Int {
+class ViewPageAdapter (
+    private val fragmentList: ArrayList<Fragment>,
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle
+):FragmentStateAdapter(fragmentManager,lifecycle) {
 
-        TODO("Not yet implemented")
+    override fun getItemCount(): Int {
         return fragmentList.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        TODO("Not yet implemented")
         return fragmentList[position]
     }
 }

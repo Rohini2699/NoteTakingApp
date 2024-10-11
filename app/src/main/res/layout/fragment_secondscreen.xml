@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.screens.secondscreen">
+    tools:context=".view.screens.SecondScreen">
 
     <!-- ImageView for creating a note -->
     <ImageView
@@ -39,6 +39,7 @@
         android:layout_marginBottom="16dp"
         android:padding="20dp"
         android:text="Next"
+        android:visibility="gone"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
