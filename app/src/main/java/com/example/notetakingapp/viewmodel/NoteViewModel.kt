@@ -73,7 +73,6 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
     }
 
     fun selectall() = viewModelScope.launch {
-
         if (selectalltext.value == "SelectAll") {
 
             // Perform update operation
@@ -167,6 +166,9 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
                 } else it
             }
             _allNotesMutableList.value = newList
+            if (newList.count() == 1) {
+                selectalltext.value = "DeselectAll"
+            }
         }
 
         /*      val currNotes = users.value?.toMutableList() ?: return
@@ -233,8 +235,6 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 
             }
             updatecount()
-
-
         }
     }
 
@@ -242,10 +242,14 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
         val currentList = getCurrentList()
         if (currentList.isNotEmpty()) {
             val newList = currentList.map {
-                if (it.isSelected) {
-                    it.copy(priority = priority)
+                if (it.isSelected ) {
+                    if (it.priority != priority) {
+                        it.copy(priority = priority, isHighPriorityVisible = true)
+                    } else {
+                        it.copy(priority = priority , isHighPriorityVisible = !it.isHighPriorityVisible)
+                    }
                 } else {
-                    it
+                    it.copy(priority = null, isHighPriorityVisible = false)
                 }
             }
             _allNotesMutableList.value = newList

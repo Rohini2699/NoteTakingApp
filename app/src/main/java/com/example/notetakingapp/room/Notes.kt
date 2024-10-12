@@ -5,7 +5,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
-import java.util.Date
 
 
 enum class Priority {
@@ -25,5 +24,6 @@ data class Notes(
     var isSelected: Boolean = false,
     var isPinned: Boolean = false,
     val date:String?, // storing date as a time stamp
-    var priority: Priority? = null // Default value for the priority.
+    var priority: Priority? = null, // Default value for the priority.
+    var isHighPriorityVisible: Boolean = false
 ) : Parcelable

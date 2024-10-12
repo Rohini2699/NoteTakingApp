@@ -55,7 +55,8 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.6.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.cardview:cardview:1.0.0")
-    //
+    //dependency for button
+    implementation("com.tbuonomo:dotsindicator:4.3")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.4")
     implementation("androidx.databinding:databinding-runtime:8.5.2")
