@@ -94,10 +94,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                         setMessage("You want to delete the selected notes ")
                         setPositiveButton("Delete") { _, _ ->
                             myViewModel.deleteNotesById()
+
                         }
                         setNegativeButton("cancel", null)
                     }.create().show()
                     true
+
                 }
 
                 R.id.action_lowpriority -> {
@@ -169,6 +171,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                 binding.emptynotes.visibility = View.VISIBLE
                 binding.recyclerView.visibility = View.GONE
                 binding.constraintSelectDeselect.isVisible=false
+                binding.bottomNavigationView.isVisible=false
+                binding.fbutton.isVisible=true
             } else {
                 binding.emptynotes.visibility = View.GONE
                 binding.recyclerView.visibility = View.VISIBLE
