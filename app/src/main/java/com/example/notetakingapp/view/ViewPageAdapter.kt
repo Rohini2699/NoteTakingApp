@@ -10,12 +10,12 @@ class ViewPageAdapter (list: ArrayList<Fragment> ,fragmentManager: FragmentManag
     private val fragmentList=list
     override fun getItemCount(): Int {
 
-        TODO("Not yet implemented")
+
         return fragmentList.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        TODO("Not yet implemented")
+
         return fragmentList[position]
     }
 }

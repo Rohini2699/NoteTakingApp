@@ -16,5 +16,13 @@
     <string name="search">Search</string>
     <string name="notestitle">NotesTitle</string>
     <string name="type_something">Type Something</string>
+    <string name="createnote">CreateNote</string>
+    <string name="in_the_notes_app_users_can_create_new_notes_by_clicking_an_fab_button_which_opens_a_screen_to_input_the_note_s_title_and_content_they_can_view_all_saved_notes_in_a_list_format_read_select_and_edit_notes_to_update_their_content_update_and_delete_notes_by_swiping_or_tapping_a_delete_icon_delete_this_allows_users_to_efficiently_manage_their_notes_with_full_crud_functionality">In the notes app, users can create new notes by clicking an fab button, which opens a screen to input the note\'s title and content. They can view all saved notes in a list format (Read), select and edit notes to update their content (Update), and delete notes by swiping or tapping a delete icon (Delete). This allows users to efficiently manage their notes with full CRUD functionality.</string>
+    <string name="next">Next</string>
+    <string name="string_pinnotes">Pin Notes</string>
+    <string name="search_notes">Search notes</string>
+    <string name="finish">Finish</string>
+    <string name="edit_note">Edit Note.</string>
+    <string name="created_date">Created Date</string>
 </resources>
 
