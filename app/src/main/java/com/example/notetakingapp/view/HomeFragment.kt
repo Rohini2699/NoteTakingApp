@@ -101,18 +101,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                 }
 
                 R.id.action_lowpriority -> {
-
                     // Handles low priority  clicks here
                     myViewModel.filterNotesByPriority(Priority.LOW)
                     myViewModel.setPriorityForSelectedNotes(Priority.LOW)
-
-
                     true
                 }
 
                 R.id.action_highpriority -> {
                     // Handle priority clicks here
-
                     myViewModel.filterNotesByPriority(Priority.HIGH)
                     myViewModel.setPriorityForSelectedNotes(Priority.HIGH)
                     true

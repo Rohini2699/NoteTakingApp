@@ -1,15 +1,13 @@
 package com.example.notetak
 
+
 import android.annotation.SuppressLint
-import androidx.core.view.isVisible
-
-
-
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -23,7 +21,7 @@ import com.example.notetakingapp.util.Utils.formatLocalDateTimeWithZoneId
 import java.time.ZoneId
 import java.util.Random
 
-class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteClickListener) :
+class CustomAdapter(private val notes: List<Notes>, private val listener: NoteClickListener) :
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
     //private var isHighPriorityVisible = false
@@ -58,23 +56,18 @@ class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteC
 //        }
         @SuppressLint("SuspiciousIndentation")
         fun bind(notes: Notes, position: Int) {
-//            currentNotes = notes
             binding.notetitle.text = notes.title
             binding.description.text = notes.description
             binding.button.isChecked = notes.isSelected
-                    if(notes.date?.isNotEmpty()==true)
-                     {
-                val localDateTime = convertMillisToLocalDateTime(notes.date.orEmpty().toLong())
-                println(localDateTime)
-                val formateddate = formatLocalDateTimeWithZoneId(localDateTime , zoneId = ZoneId.systemDefault())
-                Log.d("formated date" ,"date : $formateddate" )
-                binding.datetext.text=formateddate
-                     }
-            else
-                {
-                    binding.datetext.isVisible=false
-                }
-            //binding.datetext.text =
+            if (notes.date?.isNotEmpty() == true) {
+                val localDateTime = convertMillisToLocalDateTime(notes.date.toLong())
+                val formattedDate =
+                    formatLocalDateTimeWithZoneId(localDateTime, zoneId = ZoneId.systemDefault())
+                binding.datetext.text = formattedDate
+            } else {
+                binding.datetext.isVisible = false
+            }
+
             binding.cardview.setOnClickListener {
                 listener.onItemClick(notes, binding.cardview, false)
             }
@@ -144,7 +137,9 @@ class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteC
             random.nextInt(256),
             random.nextInt(256)
         )
+
         holder.binding.card.setBackgroundColor(colors)
+
         if (currentNotes.isPinned) {
             holder.binding.pin.visibility = View.VISIBLE
         } else {
@@ -152,26 +147,16 @@ class CustomAdapter(private val notes: List<Notes>,  private val listener: NoteC
         }
 
         if (currentNotes.priority != null) {
-
-                if (!currentNotes.isHighPriorityVisible) {
-
-                    //holder.binding.lowpriority.visibility = View.GONE
-                    holder.binding.highpriority.visibility = View.VISIBLE
-                    currentNotes.isHighPriorityVisible = true
-                    Log.d("priorityvisible1", "priority: ${currentNotes.isHighPriorityVisible}")
-
-
-                } else {
-
-                    holder.binding.highpriority.visibility = View.GONE
-                    currentNotes.isHighPriorityVisible=false
-
-                    //holder.binding.lowpriority.visibility = View.GO
-                   // isHighPriorityVisible = false
-                    Log.d("priorityvisible", "priority: ${currentNotes.isHighPriorityVisible}")
-                }
-
-
+            if (currentNotes.priority ==  Priority.LOW) {
+                holder.binding.lowpriority.isVisible = currentNotes.isHighPriorityVisible
+                holder.binding.highpriority.isVisible = false
+            } else {
+                holder.binding.highpriority.isVisible = currentNotes.isHighPriorityVisible
+                holder.binding.lowpriority.isVisible = false
+            }
+        } else {
+            holder.binding.lowpriority.isVisible = false
+            holder.binding.highpriority.isVisible = false
         }
     }
 

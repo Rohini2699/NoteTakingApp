@@ -9,6 +9,8 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.notetakingapp.databinding.FragmentOnBoardingFragmetBinding
+import com.example.notetakingapp.util.Constants.PREF_KEY_ONBOARDING
+import com.example.notetakingapp.util.Constants.PREF_NAME
 import com.example.notetakingapp.view.ViewPageAdapter
 import com.example.notetakingapp.view.screens.FirstScreen
 import com.example.notetakingapp.view.screens.SecondScreen
@@ -50,9 +52,9 @@ class OnBoardingFragment : Fragment() {
         binding?.run {
             tvNext.setOnClickListener {
                 if (viewPager.currentItem == 2) {
-                    val sharedPref = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                    val sharedPref = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                     sharedPref?.edit {
-                        putBoolean("onboarding_complete", true)
+                        putBoolean(PREF_KEY_ONBOARDING, true)
                         apply()
                     }
                     findNavController().navigate(R.id.action_onboardingFragment_to_homeScreenFragment)

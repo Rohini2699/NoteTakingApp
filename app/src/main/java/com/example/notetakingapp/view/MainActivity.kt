@@ -10,6 +10,8 @@ import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.ActivityMainBinding
 import com.example.notetakingapp.repository.NotesRepository
 import com.example.notetakingapp.room.NotesDatabase
+import com.example.notetakingapp.util.Constants.PREF_KEY_ONBOARDING
+import com.example.notetakingapp.util.Constants.PREF_NAME
 import com.example.notetakingapp.viewmodel.NoteViewModel
 import com.example.notetakingapp.viewmodel.ViewModelFactory
 
@@ -33,8 +35,8 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.findNavController()
 
         // Check if onboarding is complete using Shared Preferences
-        val sharedPref = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val isOnboardingComplete = sharedPref.getBoolean("onboarding_complete", false)
+        val sharedPref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val isOnboardingComplete = sharedPref.getBoolean(PREF_KEY_ONBOARDING, false)
 
         if (!isOnboardingComplete) {
             // Navigate to the onboarding fragment to start the onboarding process
