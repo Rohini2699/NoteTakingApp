@@ -34,4 +34,9 @@ class NotesRepository (private val db:NotesDao) {
     }
 
     fun searchNote(query:String?)=db.searchNote(query)
+
+    suspend fun saveImage(noteId: Int, imageArray: String) {
+        db.saveImage(imageArray, noteId)
+        Log.d("imagearray" ,"$imageArray")
+    }
 }

@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.screens.firstscreen">
-
+    tools:context=".view.screens.FirstScreen">
     <!-- ImageView for creating a note -->
     <ImageView
         android:id="@+id/imageView"
@@ -17,7 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <!-- TextView displaying "Create note" text -->
     <TextView
         android:layout_width="wrap_content"
@@ -31,7 +29,6 @@
         app:layout_constraintStart_toStartOf="@id/imageView"
         app:layout_constraintEnd_toEndOf="@id/imageView"
         />
-
     <!-- TextView displaying "Next" button/text at the bottom right -->
     <TextView
         android:id="@+id/textview2"
@@ -46,7 +43,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview" />
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"

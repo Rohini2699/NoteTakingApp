@@ -4,32 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.screens.ThirdScreen">
-
+    tools:context=".view.screens.PriorityFragment">
     <!-- ImageView for creating a note -->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/search"
+        android:src="@drawable/priority"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <!-- TextView displaying "Create note" text -->
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/search_notes"
+        android:text="Priority"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/imageView"
         app:layout_constraintStart_toStartOf="@id/imageView"
         app:layout_constraintTop_toBottomOf="@id/imageView" />
-
+    <!-- TextView displaying "Next" button/text at the bottom right -->
     <TextView
         android:id="@+id/textview3"
         android:layout_width="0dp"
@@ -37,14 +35,13 @@
         android:layout_marginTop="32dp"
         android:layout_marginHorizontal="16dp"
         android:textAlignment="center"
-        android:text="The user can refine their search by selecting the search icon on the top bar, and the search results will be displayed on the screen."
+        android:text="@string/when_the_user_performs_a_long_click_on_a_note_a_bottom_navigation_bar_will_appear_allowing_them_to_assign_a_priority_level_to_the_note_such_as_high_or_low_priority"
         android:textSize="18sp"
         android:textStyle="italic"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView2" />
-
     <!-- TextView displaying "Next" button/text at the bottom right -->
     <TextView
         android:id="@+id/textView3"
@@ -53,7 +50,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:padding="20dp"
-        android:text="@string/finish"
+        android:text="Next"
         android:visibility="gone"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -62,3 +59,5 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

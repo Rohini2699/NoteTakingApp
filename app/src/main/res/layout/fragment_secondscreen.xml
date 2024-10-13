@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.screens.secondscreen">
-
+    tools:context=".view.screens.SecondScreen">
     <!-- ImageView for creating a note -->
     <ImageView
         android:id="@+id/imageView"
@@ -16,20 +15,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <!-- TextView displaying "Create note" text -->
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/string_pinnotes"
+        android:text="Pin note"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/imageView"
         app:layout_constraintStart_toStartOf="@id/imageView"
         app:layout_constraintTop_toBottomOf="@id/imageView" />
-
+    <!-- TextView displaying "Next" button/text at the bottom right -->
+    <TextView
+        android:id="@+id/textview3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="16dp"
+        android:textAlignment="center"
+        android:text="@string/when_user_made_a_long_click_on_notes_user_can_view_the_bottom_navigation_menu_in_that_user_can_pin_the_notes"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView2" />
     <!-- TextView displaying "Next" button/text at the bottom right -->
     <TextView
         android:id="@+id/textView3"
@@ -38,7 +50,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:padding="20dp"
-        android:text="@string/next"
+        android:text="Next"
+        android:visibility="gone"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"

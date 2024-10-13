@@ -16,10 +16,9 @@ interface NotesDao {
     suspend fun updatenotes(notes: Notes)
     @Delete
     suspend fun deletenotes(notes: Notes)
-
     @Query("DELETE FROM Notes_table WHERE id =:id ")
     suspend fun deleteNotesById(id:Int)
-    //////////////////////////
+    ////////////////////////////
     @Query("UPDATE Notes_table SET isSelected = 0")
     suspend fun deselectall()
     //////////////////////////
@@ -32,4 +31,6 @@ interface NotesDao {
     fun getallnotes(): LiveData<List<Notes>>
     @Query("SELECT * FROM Notes_table WHERE title LIKE :query OR  description LIKE :query " )
     fun searchNote(query:String?):LiveData<List<Notes>>
+    @Query("UPDATE Notes_table SET image = :imageArray WHERE id=:noteId")
+    suspend fun saveImage(imageArray: String, noteId: Int)
 }
