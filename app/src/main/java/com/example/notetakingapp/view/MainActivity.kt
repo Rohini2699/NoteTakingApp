@@ -30,19 +30,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Get a reference to the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.findNavController()
-
-        // Check if onboarding is complete using Shared Preferences
-        val sharedPref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val isOnboardingComplete = sharedPref.getBoolean(PREF_KEY_ONBOARDING, false)
-
-        if (!isOnboardingComplete) {
-            // Navigate to the onboarding fragment to start the onboarding process
-            navController.navigate(R.id.onBoardingFragment)
-        }
-
+//        // Get a reference to the NavHostFragment
+//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+//        val navController = navHostFragment.findNavController
         setUpViewModel()
     }
 

@@ -33,6 +33,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private lateinit var myViewModel: NoteViewModel
     private lateinit var noteAdapter: CustomAdapter
     private var ispinned:Boolean = false
+//    private lateinit var currentNote: Notes
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +68,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         observeSelectedNotes()
 
         binding.fbutton.setOnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_SecondaryFragment2)
+            it.findNavController().navigate(R.id.action_homeFragment_to_SecondaryFragment)
         }
         //myViewModel.selectedlist.observe(viewLifecycleOwner){notes->noteAdapter .
         //differ.submitList(notes)}
@@ -81,8 +83,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             when (menuItem.itemId) {
                 R.id.action_pin -> {
                     // Handle Home click here
-                    myViewModel.pinSelectedNotes()
-                    menuItem.setIcon(if(ispinned ) R.drawable.baseline_push_pin_24 else R.drawable.unpin)
+                    // var isCurrentlyPinned = myViewModel.getCurrentPinStatus()
+                    myViewModel.pinSelectedNotes(ispinned)
+                   // myViewModel.savePinStatus(currentNote.id, isPinned = true)
+                    menuItem.setIcon(if(!ispinned) R.drawable.baseline_push_pin_24 else R.drawable.unpin)
                     ispinned=!ispinned
                     true
                 }
@@ -196,7 +200,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         val searchQuery =
             "%$query" // it is a wild card entry that it can have 0 or more number of position .
         myViewModel.searchnotes(searchQuery)
-            .observe(this) { list -> noteAdapter.differ.submitList(list) }
+            .observe(this) { list-> noteAdapter.differ.submitList(list) }
     }
 
     override fun onDestroyView() {

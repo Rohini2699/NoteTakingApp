@@ -16,14 +16,16 @@ enum class Priority {
 @Parcelize
 data class Notes(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name="noteId")
     val id: Int,
     var title: String?,
     var description: String?,
-
     @ColumnInfo(name = "isSelected")
     var isSelected: Boolean = false,
+    @ColumnInfo(name ="isPinned")
     var isPinned: Boolean = false,
     val date:String?, // storing date as a time stamp
+    val image:String? =null,
     var priority: Priority? = null, // Default value for the priority.
     var isHighPriorityVisible: Boolean = false
 ) : Parcelable

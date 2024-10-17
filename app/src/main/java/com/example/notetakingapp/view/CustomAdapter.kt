@@ -29,6 +29,7 @@ class CustomAdapter(private val notes: List<Notes>, private val listener: NoteCl
     interface NoteClickListener {
         fun onItemClick(notes: Notes, v: View, isLongClick: Boolean)
         fun onLongClicked(position: Int, notes: Notes)
+       // fun onPinClick(position: Int ,)
 
     }
 
@@ -140,8 +141,10 @@ class CustomAdapter(private val notes: List<Notes>, private val listener: NoteCl
 
         holder.binding.card.setBackgroundColor(colors)
 
+
         if (currentNotes.isPinned) {
             holder.binding.pin.visibility = View.VISIBLE
+
         } else {
             holder.binding.pin.visibility = View.GONE
         }

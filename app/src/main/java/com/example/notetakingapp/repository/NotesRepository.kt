@@ -8,7 +8,7 @@ import com.example.notetakingapp.room.NotesDao
 class NotesRepository (private val db:NotesDao) {
 
     val allnotes = db.getallnotes()
-    val selectednotes = db .getSelectedNotes()
+
 
     suspend fun insertNote(notes: Notes) {
         return db.insertnotes(notes)
@@ -32,6 +32,20 @@ class NotesRepository (private val db:NotesDao) {
     suspend fun deleteNotesById(id:Int){
         return db.deleteNotesById(id)
     }
-
     fun searchNote(query:String?)=db.searchNote(query)
+
+
+    suspend fun savePinStatus( noteId: Int ,isPinned:Boolean ){
+
+            db.updatePinStatus(noteId ,isPinned)
+
+    }
+
+
+    suspend fun saveImage(noteId: Int, imageArray: String) {
+        db.saveImage(imageArray, noteId)
+        Log.d("imagearray" ,"$imageArray")
+    }
+
+
 }
