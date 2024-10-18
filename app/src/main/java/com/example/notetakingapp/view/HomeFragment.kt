@@ -82,10 +82,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_pin -> {
-                    // Handle Home click here
-                    // var isCurrentlyPinned = myViewModel.getCurrentPinStatus()
                     myViewModel.pinSelectedNotes(ispinned)
-                   // myViewModel.savePinStatus(currentNote.id, isPinned = true)
                     menuItem.setIcon(if(!ispinned) R.drawable.baseline_push_pin_24 else R.drawable.unpin)
                     ispinned=!ispinned
                     true
@@ -167,7 +164,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                 updateUI(notes)
             }
         }
+        activity?.let {
+            myViewModel.selectedListOfNotes.observe(viewLifecycleOwner){notes->
+                Log.d("selectednotes" ,"$notes")
+//                notes?.let {
+//                    updateUI(notes)
+//
+//                }
+            }
+        }
     }
+
 
     private fun updateUI(note: List<Notes>?) {
         if (note != null) {

@@ -18,9 +18,12 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 
     // LiveData from the repository
     val users: LiveData<List<Notes>> = repo.allnotes
-
+    val selectedListOfNotes:LiveData<List<Notes>> = repo.selectednotes
     private val _allNotesMutableList = MutableLiveData<List<Notes>>(emptyList())
     val allNotes: LiveData<List<Notes>> = _allNotesMutableList
+
+    private val _allNotesSelectedMutableList = MutableLiveData<List<Notes>>(emptyList())
+    val selectedNotes: LiveData<List<Notes>> = _allNotesSelectedMutableList
 
     // MutableLiveData for internal use
     private val _mutableNotes = MutableLiveData<List<Notes>>()
@@ -31,7 +34,6 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
         _mutableNotes.value = currentNotes
         _allNotesMutableList.value = currentNotes
     }
-
     private var _selectedNotesList = MutableLiveData<MutableList<Notes>>(mutableListOf())
     var selectedNotesList: LiveData<MutableList<Notes>> = _selectedNotesList
 
@@ -65,7 +67,6 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
     }
 
     fun deselect() = viewModelScope.launch {
-        repo.deselectall()
         _selectedNotesList.value = mutableListOf()
         val currentList = getCurrentList()
         val newList = currentList.map { note -> note.copy(isSelected = true) }
@@ -74,10 +75,12 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 
     fun selectall() = viewModelScope.launch {
         if (selectalltext.value == "SelectAll") {
+            repo.updateall(1)
             updatecount()
             updateAllNotesList()
             selectalltext.value = "DeselectAll"
         } else if (selectalltext.value == "DeselectAll") {
+            repo.updateall(0)
             deselect()
             selectedcounttext.value = "No items are selected"
             selectalltext.value = "SelectAll"
@@ -93,8 +96,7 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
     }
 
     fun updatecount() = viewModelScope.launch {
-        val rowscount = repo.updateall()
-        selectedcounttext.value = "$rowscount  items(s) selected"
+        selectedcounttext.value = "${selectedNotes.value?.count()?:0}  items(s) selected"
         _selectedNotesList.value = users.value?.toMutableList() ?: mutableListOf()
     }
 
@@ -121,6 +123,9 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
     fun setNotesList(notesList: List<Notes>) {
         _allNotesMutableList.value = notesList
     }
+
+
+
     fun selectNoteAtIndex(index: Int) {
         val currentList = getCurrentList()
         if (currentList.isNotEmpty()) {
@@ -164,27 +169,30 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 //    }
     fun pinSelectedNotes(isPinned:Boolean){
         viewModelScope.launch {
-            val selectedNotes = selectedNotesList.value
-            selectedNotes?.map { notes ->
+            val currentList = getCurrentList()
+            val newList = currentList.map { note -> note.copy(isSelected = true) }
+            Log.d("selectednotes" ,"$selectedNotes")
+           // val currentList = getCurrentList().toMutableList()
+            newList?.map { notes ->
                 repo.savePinStatus(notes.id, isPinned)
-                    val currentList = getCurrentList().toMutableList()
                     if(notes.isPinned) {
                         notes.copy(isPinned = false)
-
                         Log.d("Selectednotes", "IF block")
                     } else {
                         notes.copy(isPinned = true)
                         Log.d("Selectednotes", "else block")
                     }
-
-                    _allNotesMutableList.value = currentList
-                    Log.d("currentList", "currentList$currentList")
-                }
+                    _allNotesSelectedMutableList.value = newList
+                    Log.d("currentList", "currentList$selectedNotes")
+            }
         }
     }
 
+
+
     fun deleteNotesById(){
         viewModelScope.launch {
+
             val selectedNotes = selectedNotesList.value
             selectedNotes?.map {
                     notes-> repo.deleteNotesById(notes.id)
@@ -251,6 +259,7 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
     }
 
     private fun getCurrentList() = allNotes.value?.toMutableList() ?: mutableListOf()
+    private fun getSelectedList() = selectedNotes.value?.toMutableList()?: mutableListOf()
 }
 
 

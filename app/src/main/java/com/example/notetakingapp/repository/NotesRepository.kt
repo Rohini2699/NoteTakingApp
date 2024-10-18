@@ -8,20 +8,21 @@ import com.example.notetakingapp.room.NotesDao
 class NotesRepository (private val db:NotesDao) {
 
     val allnotes = db.getallnotes()
-
+    val selectednotes = db.getSelectedNotes()
 
     suspend fun insertNote(notes: Notes) {
         return db.insertnotes(notes)
     }
     suspend fun update(notes: Notes) {
 
+
         return db.updatenotes(notes)
+
     }
-      suspend fun updateall():Int
+    fun updateall(isSelected:Int)
     {
-        val rowsUpdated = db.updateAll()
-        Log.d("NoteRepository", "Number of notes updated: $rowsUpdated")
-           return rowsUpdated
+        db.updateAll(isSelected)
+
     }
     suspend fun delete(notes: Notes) {
         return db.deletenotes(notes)
@@ -32,15 +33,18 @@ class NotesRepository (private val db:NotesDao) {
     suspend fun deleteNotesById(id:Int){
         return db.deleteNotesById(id)
     }
+
     fun searchNote(query:String?)=db.searchNote(query)
-
-
+    // I am getting the selected notes.
     suspend fun savePinStatus( noteId: Int ,isPinned:Boolean ){
 
             db.updatePinStatus(noteId ,isPinned)
-
     }
-
+//     suspend fun updateselectednotes(noteId: Int ,isSlected:Boolean):LiveData<List<Notes>>
+//     {
+//        return  db.updateselectednotes(noteId,isSlected)
+//
+//     }
 
     suspend fun saveImage(noteId: Int, imageArray: String) {
         db.saveImage(imageArray, noteId)

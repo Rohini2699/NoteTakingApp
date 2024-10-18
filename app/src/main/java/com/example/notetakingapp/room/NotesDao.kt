@@ -23,11 +23,12 @@ interface NotesDao {
     @Query("UPDATE Notes_table SET isSelected = 0")
     suspend fun deselectall()
     //////////////////////////
-    @Query("UPDATE Notes_table SET isSelected = 1")
-    suspend fun updateAll():Int
+    @Query("UPDATE Notes_table SET isSelected=:isSelected")
+    fun updateAll(isSelected:Int)
     //////////////////
     @Query("SELECT * FROM Notes_table WHERE isSelected = 1")
     fun getSelectedNotes(): LiveData<List<Notes>>
+    ////////////////
    @Query("SELECT * FROM Notes_table")
     fun getallnotes(): LiveData<List<Notes>>
     @Query("SELECT * FROM Notes_table WHERE title LIKE :query OR  description LIKE :query " )
@@ -37,6 +38,9 @@ interface NotesDao {
     ////////////////
     @Query("UPDATE Notes_table SET isPinned=:isPinned WHERE noteId=:noteId")
     suspend fun updatePinStatus(noteId: Int, isPinned: Boolean)
+    //////////////////////////
+//    @Query("UPDATE Notes_table SET isSelected=:isSelected WHERE noteId=:noteId")
+//     fun  updateselectednotes(noteId: Int ,isSelected:Boolean):LiveData<List<Notes>>
 
 
 
