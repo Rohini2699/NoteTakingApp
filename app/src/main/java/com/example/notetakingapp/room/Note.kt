@@ -14,7 +14,7 @@ enum class Priority {
 
 @Entity(tableName = "Notes_table")
 @Parcelize
-data class Notes(
+data class Note(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="noteId")
     val id: Int,

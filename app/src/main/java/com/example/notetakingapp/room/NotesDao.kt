@@ -11,11 +11,11 @@ import androidx.room.Update
 interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertnotes(notes: Notes)
+    suspend fun insertnotes(notes: Note)
     @Update
-    suspend fun updatenotes(notes: Notes)
+    suspend fun updatenotes(notes: Note)
     @Delete
-    suspend fun deletenotes(notes: Notes)
+    suspend fun deletenotes(notes: Note)
 
     @Query("DELETE FROM Notes_table WHERE noteId =:noteId ")
     suspend fun deleteNotesById(noteId:Int)
@@ -27,12 +27,12 @@ interface NotesDao {
     fun updateAll(isSelected:Int)
     //////////////////
     @Query("SELECT * FROM Notes_table WHERE isSelected = 1")
-    fun getSelectedNotes(): LiveData<List<Notes>>
+    fun getSelectedNotes(): LiveData<List<Note>>
     ////////////////
    @Query("SELECT * FROM Notes_table")
-    fun getallnotes(): LiveData<List<Notes>>
+    fun getallnotes(): LiveData<List<Note>>
     @Query("SELECT * FROM Notes_table WHERE title LIKE :query OR  description LIKE :query " )
-    fun searchNote(query:String?):LiveData<List<Notes>>
+    fun searchNote(query:String?):LiveData<List<Note>>
     @Query("UPDATE Notes_table SET image= :imageArray WHERE noteId=:noteId")
     suspend fun saveImage(imageArray: String, noteId: Int)
     ////////////////
@@ -42,6 +42,8 @@ interface NotesDao {
 //    @Query("UPDATE Notes_table SET isSelected=:isSelected WHERE noteId=:noteId")
 //     fun  updateselectednotes(noteId: Int ,isSelected:Boolean):LiveData<List<Notes>>
 
-
+    //This query will update all selected note records according to "isPinned" value
+    @Query("UPDATE Notes_table SET isPinned =:isPinned WHERE noteId IN (:noteIds)")
+    suspend fun updateIsPinnedColumn(noteIds: List<Int>, isPinned: Int)
 
 }

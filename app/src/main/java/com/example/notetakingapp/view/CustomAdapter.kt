@@ -14,21 +14,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.NoteLayoutBinding
-import com.example.notetakingapp.room.Notes
+import com.example.notetakingapp.room.Note
 import com.example.notetakingapp.room.Priority
 import com.example.notetakingapp.util.Utils.convertMillisToLocalDateTime
 import com.example.notetakingapp.util.Utils.formatLocalDateTimeWithZoneId
 import java.time.ZoneId
 import java.util.Random
 
-class CustomAdapter(private val notes: List<Notes>, private val listener: NoteClickListener) :
+class CustomAdapter(private val notes: List<Note>, private val listener: NoteClickListener) :
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
     //private var isHighPriorityVisible = false
 
     interface NoteClickListener {
-        fun onItemClick(notes: Notes, v: View, isLongClick: Boolean)
-        fun onLongClicked(position: Int, notes: Notes)
+        fun onItemClick(notes: Note, v: View, isLongClick: Boolean)
+        fun onLongClicked(position: Int, notes: Note)
        // fun onPinClick(position: Int ,)
 
     }
@@ -56,7 +56,7 @@ class CustomAdapter(private val notes: List<Notes>, private val listener: NoteCl
 //            return false
 //        }
         @SuppressLint("SuspiciousIndentation")
-        fun bind(notes: Notes, position: Int) {
+        fun bind(notes: Note, position: Int) {
             binding.notetitle.text = notes.title
             binding.description.text = notes.description
             binding.button.isChecked = notes.isSelected
@@ -88,14 +88,14 @@ class CustomAdapter(private val notes: List<Notes>, private val listener: NoteCl
     // viewholder class is basically used for attatching the layout xml files
     //var currentSelectedIndex = -1
     //private var isLongClickTriggered = false
-    private val differCallback = object : DiffUtil.ItemCallback<Notes>() {
-        override fun areItemsTheSame(oldItem: Notes, newItem: Notes): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<Note>() {
+        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
             Log.d("DiffUtil", "Comparing items: ${oldItem.id} with ${newItem.id}")
             return oldItem.id == newItem.id
             // it is used to update the contents without modifying the entire dataset .
         }
 
-        override fun areContentsTheSame(oldItem: Notes, newItem: Notes): Boolean {
+        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
             Log.d("DiffUtil", "Comparing contents: ${oldItem} with ${newItem}")
             return oldItem == newItem
         }

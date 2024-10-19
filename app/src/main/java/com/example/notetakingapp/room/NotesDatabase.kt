@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import kotlin.concurrent.Volatile
 
 @Database(
-    entities = [Notes::class],
+    entities = [Note::class],
     version = 1,
 
 )

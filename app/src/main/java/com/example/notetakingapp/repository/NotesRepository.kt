@@ -1,8 +1,7 @@
 package com.example.notetakingapp.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import com.example.notetakingapp.room.Notes
+import com.example.notetakingapp.room.Note
 import com.example.notetakingapp.room.NotesDao
 
 class NotesRepository (private val db:NotesDao) {
@@ -10,21 +9,21 @@ class NotesRepository (private val db:NotesDao) {
     val allnotes = db.getallnotes()
     val selectednotes = db.getSelectedNotes()
 
-    suspend fun insertNote(notes: Notes) {
+    suspend fun insertNote(notes: Note) {
         return db.insertnotes(notes)
     }
-    suspend fun update(notes: Notes) {
+    suspend fun update(notes: Note) {
 
 
         return db.updatenotes(notes)
 
     }
-    fun updateall(isSelected:Int)
+    fun updateAll(isSelected:Int)
     {
         db.updateAll(isSelected)
 
     }
-    suspend fun delete(notes: Notes) {
+    suspend fun delete(notes: Note) {
         return db.deletenotes(notes)
     }
     suspend fun deselectall(){
@@ -49,6 +48,10 @@ class NotesRepository (private val db:NotesDao) {
     suspend fun saveImage(noteId: Int, imageArray: String) {
         db.saveImage(imageArray, noteId)
         Log.d("imagearray" ,"$imageArray")
+    }
+
+    suspend fun updateIsPinnedColumn(noteIds: List<Int>, isPinned: Int) {
+        db.updateIsPinnedColumn(noteIds, isPinned)
     }
 
 

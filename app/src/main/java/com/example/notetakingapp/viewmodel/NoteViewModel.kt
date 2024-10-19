@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notetakingapp.repository.NotesRepository
-import com.example.notetakingapp.room.Notes
+import com.example.notetakingapp.room.Note
 import com.example.notetakingapp.room.Priority
 import kotlinx.coroutines.launch
 
@@ -17,16 +17,26 @@ import kotlinx.coroutines.launch
 class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable {
 
     // LiveData from the repository
-    val users: LiveData<List<Notes>> = repo.allnotes
-    val selectedListOfNotes:LiveData<List<Notes>> = repo.selectednotes
-    private val _allNotesMutableList = MutableLiveData<List<Notes>>(emptyList())
-    val allNotes: LiveData<List<Notes>> = _allNotesMutableList
+    val users: LiveData<List<Note>> = repo.allnotes
+    val selectedListOfNotes: LiveData<List<Note>> = repo.selectednotes
 
-    private val _allNotesSelectedMutableList = MutableLiveData<List<Notes>>(emptyList())
-    val selectedNotes: LiveData<List<Notes>> = _allNotesSelectedMutableList
+    private val _allNotesMutableList = MutableLiveData<List<Note>>(emptyList())
+    val allNotes: LiveData<List<Note>> = _allNotesMutableList
+
+    private var _selectedNotesList = MutableLiveData<List<Note>>(emptyList())
+    var selectedNotesList: LiveData<List<Note>> = _selectedNotesList
+
+    private val _toastMessage = MutableLiveData<String>()
+    val toastMessage: LiveData<String> get() = _toastMessage
+
+    @Bindable
+    val selectAllText = MutableLiveData<String>()
+
+    @Bindable
+    val selectedCountText = MutableLiveData<String>()
 
     // MutableLiveData for internal use
-    private val _mutableNotes = MutableLiveData<List<Notes>>()
+    private val _mutableNotes = MutableLiveData<List<Note>>()
 
     // Function to initialize the MutableLiveData
     private fun initializeMutableNotes() {
@@ -34,97 +44,73 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
         _mutableNotes.value = currentNotes
         _allNotesMutableList.value = currentNotes
     }
-    private var _selectedNotesList = MutableLiveData<MutableList<Notes>>(mutableListOf())
-    var selectedNotesList: LiveData<MutableList<Notes>> = _selectedNotesList
-
-    private val _toastMessage = MutableLiveData<String>()
-    val toastMessage: LiveData<String> get() = _toastMessage
-
-    @Bindable
-    val selectalltext = MutableLiveData<String>()
-
-    @Bindable
-    val selectedcounttext = MutableLiveData<String>()
-    var hasSelectedAll = false
 
     init {
-        selectalltext.value = "SelectAll"
-        selectedcounttext.value = "No items are selected "
+        selectAllText.value = "SelectAll"
+        selectedCountText.value = "No items are selected "
         initializeMutableNotes()
     }
 
-    fun addNote(notes: Notes) = viewModelScope.launch {
+    fun addNote(notes: Note) = viewModelScope.launch {
         // this ensured that the coroutines will be cancelled when the association viewmodel is destroyed or cancelled.
         repo.insertNote(notes)
     }
 
-    fun updateNotes(notes: Notes) = viewModelScope.launch {
+    fun updateNotes(notes: Note) = viewModelScope.launch {
         repo.update(notes)
     }
 
-    fun deleteNotes(notes: Notes) = viewModelScope.launch {
+    fun deleteNotes(notes: Note) = viewModelScope.launch {
         repo.delete(notes)
     }
 
-    fun deselect() = viewModelScope.launch {
-        _selectedNotesList.value = mutableListOf()
-        val currentList = getCurrentList()
-        val newList = currentList.map { note -> note.copy(isSelected = true) }
-        _allNotesMutableList.value = newList
-    }
+    fun selectAllNotes() = viewModelScope.launch {
+        //Here changed to "when" block instead of "if-else" statement
+        when (selectAllText.value) {
+            "SelectAll" -> {
+//                repo.updateAll(1)
+                updateSelectedCount()
+                updateAllNotesList(isSelectAll = true)
+                selectAllText.value = "DeselectAll"
+            }
 
-    fun selectall() = viewModelScope.launch {
-        if (selectalltext.value == "SelectAll") {
-            repo.updateall(1)
-            updatecount()
-            updateAllNotesList()
-            selectalltext.value = "DeselectAll"
-        } else if (selectalltext.value == "DeselectAll") {
-            repo.updateall(0)
-            deselect()
-            selectedcounttext.value = "No items are selected"
-            selectalltext.value = "SelectAll"
-        } else {
-            Log.e("MyViewModel", "Unexpected state: ${selectalltext.value}")
+            "DeselectAll" -> {
+//                repo.updateAll(0)
+                updateAllNotesList(isSelectAll = false)
+                selectedCountText.value = "No items are selected"
+                selectAllText.value = "SelectAll"
+            }
+
+            else -> {
+                Log.e("MyViewModel", "Unexpected state: ${selectAllText.value}")
+            }
         }
     }
 
-    private fun updateAllNotesList() {
+    private fun updateAllNotesList(isSelectAll: Boolean) {
         val currentList = getCurrentList()
-        val newList = currentList.map { note -> note.copy(isSelected = true) }
+        val newList = currentList.map { note -> note.copy(isSelected = isSelectAll) }
         _allNotesMutableList.value = newList
+        if (isSelectAll) {
+            // Add all notes in selectedNotesList variable when user click on selectAll button
+            _selectedNotesList.value = newList
+        } else {
+            // Set empty list when user click on deselect button
+            _selectedNotesList.value = emptyList()
+        }
     }
 
-    fun updatecount() = viewModelScope.launch {
-        selectedcounttext.value = "${selectedNotes.value?.count()?:0}  items(s) selected"
-        _selectedNotesList.value = users.value?.toMutableList() ?: mutableListOf()
+    private fun removeFromSelectedList(note: Note) {
+        val mutableList = getSelectedNoteList()
+        Log.d("CurrentListSize", "Size before removing element: ${mutableList.size}")
+        mutableList.removeIf { it.id == note.id }
+        Log.d("CurrentListSize", "Size after removing element: ${selectedNotesList.value?.size}")
+        _selectedNotesList.value = mutableList
     }
 
-    fun updateselectedcount() {
-
-        val selectedNoteCount = selectedNotesList.value?.count() ?: 0
-        selectedcounttext.value = "$selectedNoteCount item(s)selected"
-    }
-    private fun addToSelectedList(note: Notes) {
-
-        val currentList = selectedNotesList.value ?: mutableListOf()
-        currentList.add(note)
-        _selectedNotesList.value = currentList
-        Log.d("CurrentListSize", "AddToList: ${selectedNotesList.value?.size}")
-    }
-
-    private fun removeFromSelectedList(note: Notes) {
-        val currentList = selectedNotesList.value ?: mutableListOf()
-        currentList.removeIf { it.id == note.id }
-        _selectedNotesList.value = currentList
-        Log.d("CurrentListSize", "RemoveFromList: ${selectedNotesList.value?.size}")
-    }
-
-    fun setNotesList(notesList: List<Notes>) {
+    fun setNotesList(notesList: List<Note>) {
         _allNotesMutableList.value = notesList
     }
-
-
 
     fun selectNoteAtIndex(index: Int) {
         val currentList = getCurrentList()
@@ -135,23 +121,44 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
                     val isSelected = !note.isSelected
                     if (isSelected) {
                         addToSelectedList(note)
-                        updateselectedcount()
+                        updateSelectedCount()
                     } else {
                         removeFromSelectedList(note)
-                        updateselectedcount()
+                        updateSelectedCount()
                     }
                     note.copy(isSelected = isSelected)
                 } else it
             }
-            _allNotesMutableList.value = newList
-            if (newList.count() == 1) {
-                selectalltext.value = "DeselectAll"
+            // Set "DeselectAll" text if there is only one note in the adapter and if it is selected
+            // Or else all the notes in the adapter which are selected
+            if (
+                getSelectedNoteList().count() == (allNotes.value?.count() ?: 0)
+            ) {
+                selectAllText.value = "DeselectAll"
+            } else {
+                selectAllText.value = "SelectAll"
             }
+            _allNotesMutableList.value = newList
         }
     }
 
+    private fun addToSelectedList(note: Note) {
+        val mutableList = getSelectedNoteList()
+        Log.d("CurrentListSize", "Size before adding element: ${mutableList.size}")
+        if (mutableList.contains(note).not()) { // Only add if the note is not in the list already
+            mutableList.add(note)
+            Log.d("CurrentListSize", "Size after adding element: ${selectedNotesList.value?.size}")
+            _selectedNotesList.value = mutableList
+        }
+    }
 
-//    fun pinSelectedNotes(isPinned: Boolean) {
+    private fun updateSelectedCount() {
+        val selectedNoteCount = getSelectedNoteList().count()
+        selectedCountText.value = "$selectedNoteCount items selected"
+    }
+
+
+    //    fun pinSelectedNotes(isPinned: Boolean) {
 //        viewModelScope.launch {
 //            val selectedNotes = selectedNotesList.value
 //            selectedNotes?.map { notes ->
@@ -167,41 +174,38 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 //            }
 //        }
 //    }
-    fun pinSelectedNotes(isPinned:Boolean){
+    fun pinSelectedNotes(isPinned: Boolean) {
         viewModelScope.launch {
             val currentList = getCurrentList()
             val newList = currentList.map { note -> note.copy(isSelected = true) }
-            Log.d("selectednotes" ,"$selectedNotes")
-           // val currentList = getCurrentList().toMutableList()
+            Log.d("selectednotes", "$selectedNotesList")
+            // val currentList = getCurrentList().toMutableList()
             newList?.map { notes ->
                 repo.savePinStatus(notes.id, isPinned)
-                    if(notes.isPinned) {
-                        notes.copy(isPinned = false)
-                        Log.d("Selectednotes", "IF block")
-                    } else {
-                        notes.copy(isPinned = true)
-                        Log.d("Selectednotes", "else block")
-                    }
-                    _allNotesSelectedMutableList.value = newList
-                    Log.d("currentList", "currentList$selectedNotes")
+                if (notes.isPinned) {
+                    notes.copy(isPinned = false)
+                    Log.d("Selectednotes", "IF block")
+                } else {
+                    notes.copy(isPinned = true)
+                    Log.d("Selectednotes", "else block")
+                }
+                _allNotesMutableList.value = newList
+                Log.d("currentList", "currentList${selectedNotesList.value?.count()}")
             }
         }
     }
 
 
-
-    fun deleteNotesById(){
+    fun deleteNotesById() {
         viewModelScope.launch {
-
-            val selectedNotes = selectedNotesList.value
-            selectedNotes?.map {
-                    notes-> repo.deleteNotesById(notes.id)
-                val currentList = getCurrentList().toMutableList()
+            val selectedNotes = getSelectedNoteList()
+            val currentList = getCurrentList()
+            selectedNotes.map { notes ->
+                repo.deleteNotesById(notes.id)
                 currentList.removeIf { it.id == notes.id }
-                _allNotesMutableList .value=currentList
-
             }
-            updatecount()
+            _allNotesMutableList.value = currentList
+            updateSelectedCount()
         }
     }
 
@@ -210,13 +214,12 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
         if (currentList.isNotEmpty()) {
             val newList = currentList.map {
                 if (it.isSelected) {
-                    if (it.priority==priority) {
+                    if (it.priority == priority) {
                         Log.d("priotity", "$priority")
                         it.copy(priority = priority, isHighPriorityVisible = true)
                     } else {
                         it.copy(
-                            priority = priority,
-                            isHighPriorityVisible = !it.isHighPriorityVisible
+                            priority = priority, isHighPriorityVisible = !it.isHighPriorityVisible
                         )
                     }
                 } else {
@@ -237,14 +240,12 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 
     }
 
-        fun getCurrentPinStatus(noteId:Int): Boolean {
-            return _allNotesMutableList.value?.find { it.id == noteId }?.isPinned ?: false
-        }
-
+    fun getCurrentPinStatus(noteId: Int): Boolean {
+        return _allNotesMutableList.value?.find { it.id == noteId }?.isPinned ?: false
+    }
 
 
     fun searchnotes(query: String?) = repo.searchNote(query)
-
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {}
 
@@ -259,7 +260,49 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
     }
 
     private fun getCurrentList() = allNotes.value?.toMutableList() ?: mutableListOf()
-    private fun getSelectedList() = selectedNotes.value?.toMutableList()?: mutableListOf()
+    private fun getSelectedNoteList() = selectedNotesList.value?.toMutableList() ?: mutableListOf()
+
+    //Pin and Unpin notes based on note selection
+    fun pinUnpinNotes(isAlreadyPinned: Boolean) {
+        val selectedNotes = getSelectedNoteList()
+        if (isAlreadyPinned) {
+            //Unpin notes
+            if (selectedNotes.isNotEmpty()) {
+                viewModelScope.launch {
+                    val noteIds = selectedNotes.map { it.id }
+                    repo.updateIsPinnedColumn(
+                        noteIds = noteIds, // Ids list count must not be greater than 999
+                        isPinned = 0
+                    )
+                    // Update AllNotes List with isPinned = false
+                    _allNotesMutableList.value = allNotes.value?.map {
+                        if (noteIds.contains(it.id)) {
+                            it.copy(isPinned = false)
+                        } else it
+                    }?.toList() ?: emptyList()
+                    // Set empty list when user click on deselect button
+                    _selectedNotesList.value = emptyList()
+                }
+            }
+        } else {
+            //Pin notes
+            viewModelScope.launch {
+                val noteIds = selectedNotes.map { it.id }
+                repo.updateIsPinnedColumn(
+                    noteIds = noteIds, // Ids list count must not be greater than 999
+                    isPinned = 1
+                )
+                // Update AllNotes List with isPinned = true
+                _allNotesMutableList.value = allNotes.value?.map {
+                    if (noteIds.contains(it.id)) {
+                        it.copy(isPinned = true)
+                    } else it
+                }?.toList() ?: emptyList()
+                // Set empty list when user click on deselect button
+                _selectedNotesList.value = emptyList()
+            }
+        }
+    }
 }
 
 
