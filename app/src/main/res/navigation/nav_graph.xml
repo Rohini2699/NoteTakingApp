@@ -24,7 +24,7 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_SecondaryFragment2"
+            android:id="@+id/action_homeFragment_to_SecondaryFragment"
             app:destination="@id/SecondaryFragment" />
         <action
             android:id="@+id/action_homeFragment_to_updateFragment"
@@ -51,7 +51,7 @@
             app:destination="@id/homeFragment" />
         <argument
             android:name="notes"
-            app:argType="com.example.notetakingapp.room.Notes"
+            app:argType="com.example.notetakingapp.room.Note"
             app:nullable="true" />
     </fragment>
 

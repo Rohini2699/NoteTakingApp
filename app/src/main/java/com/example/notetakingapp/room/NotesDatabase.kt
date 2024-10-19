@@ -7,9 +7,9 @@ import androidx.room.RoomDatabase
 import kotlin.concurrent.Volatile
 
 @Database(
-    entities = [Notes::class],
+    entities = [Note::class],
     version = 1,
-    exportSchema = false,
+
 )
 abstract class NotesDatabase :RoomDatabase() {
     abstract val  db:NotesDao

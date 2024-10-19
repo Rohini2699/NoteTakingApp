@@ -2,9 +2,6 @@ package com.example.notetakingapp.view
 
 import android.animation.Animator
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,8 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentSecondaryfragmentBinding
-import com.example.notetakingapp.room.Notes
-import com.example.notetakingapp.room.Priority
+import com.example.notetakingapp.room.Note
 import com.example.notetakingapp.viewmodel.NoteViewModel
 
 
@@ -89,7 +85,7 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
         val notedescription = binding.description.text.toString().trim()
         if (noteTitle.isNotEmpty()) {
             val notes =
-                Notes(0, noteTitle, notedescription, isSelected = false, false , (System.currentTimeMillis()).toString())
+                Note(0, noteTitle, notedescription, isSelected = false, false , (System.currentTimeMillis()).toString())
             myViewModel.addNote(notes)
             Toast.makeText(mView.context, "Notes saved Successfully ", Toast.LENGTH_SHORT).show()
             view.findNavController().popBackStack(R.id.homeFragment, false)
