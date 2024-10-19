@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -18,11 +17,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.notetak.CustomAdapter
 import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentHomeBinding
 import com.example.notetakingapp.room.Note
-import com.example.notetakingapp.room.Priority
 import com.example.notetakingapp.viewmodel.NoteViewModel
 
 
@@ -33,20 +30,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private val binding get() = _binding!! // Assertion operator
     private lateinit var viewModel: NoteViewModel
     private lateinit var noteAdapter: CustomAdapter
-    private var ispinned: Boolean = false
     private var isAlreadyPinned: Boolean = false
-//    private lateinit var currentNote: Notes
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -55,14 +44,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         viewModel = (activity as MainActivity).myViewmodel // Ensure MainActivity has myViewModel
+
         // Initialize your adapter and other UI elements here
         binding.homefragment = viewModel
         binding.lifecycleOwner = this
-
-
         // myViewModel.selectedlist.observe(viewLifecycleOwner){selectedNotes-> selectedNotes.forEach()}
 
         setUpRecyclerView()
@@ -71,8 +60,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         binding.fbutton.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_SecondaryFragment)
         }
-        //myViewModel.selectedlist.observe(viewLifecycleOwner){notes->noteAdapter .
-        //differ.submitList(notes)}
+
         binding.canceltext.setOnClickListener {
             binding.constraintSelectDeselect.visibility = View.GONE
             binding.bottomNavigationView.visibility = View.GONE
@@ -80,15 +68,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             viewModel.removeSelection()
 
         }
+
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_pin -> {
-
                     viewModel.pinUnpinNotes(isAlreadyPinned)
-
-//                  myViewModel.pinSelectedNotes(!ispinned)
-//                    menuItem.setIcon(if (!ispinned) R.drawable.baseline_push_pin_24 else R.drawable.unpin)
-//                    ispinned = !ispinned
                     true
                 }
 
@@ -104,20 +88,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                         setNegativeButton("cancel", null)
                     }.create().show()
                     true
-
                 }
 
                 R.id.action_lowpriority -> {
-                    // Handles low priority  clicks here
-                    viewModel.filterNotesByPriority(Priority.LOW)
-                    viewModel.setPriorityForSelectedNotes(Priority.LOW)
+                    // Handles low priority clicks here
+                    viewModel.setLowPriorityForSelectedNotes()
                     true
                 }
 
                 R.id.action_highpriority -> {
                     // Handle priority clicks here
-                    viewModel.filterNotesByPriority(Priority.HIGH)
-                    viewModel.setPriorityForSelectedNotes(Priority.HIGH)
+                    viewModel.setHighPriorityForSelectedNotes()
                     true
                 }
 
@@ -160,7 +141,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     }
 
     private fun setUpRecyclerView() {
-        noteAdapter = CustomAdapter(mutableListOf(), this)
+        noteAdapter = CustomAdapter(this)
         //Here, requireContext() ensures you're providing a non-null Context when creating your CustomAdapter.
         binding.recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(
@@ -171,7 +152,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             adapter = noteAdapter
         }
     }
-
 
     private fun updateUI(note: List<Note>?) {
         if (note != null) {
@@ -203,7 +183,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private fun searchNote(query: String?) {
         val searchQuery =
             "%$query" // it is a wild card entry that it can have 0 or more number of position .
-        viewModel.searchnotes(searchQuery)
+        viewModel.searchNotes(searchQuery)
             .observe(this) { list -> noteAdapter.differ.submitList(list) }
     }
 
@@ -224,14 +204,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         return false
     }
 
-    override fun onItemClick(notes: Note, view: View, isLongClick: Boolean) {
+    override fun onItemClick(notes: Note, v: View, isLongClick: Boolean) {
         if (isLongClick) {
             Log.d("ItemClick", "Long click detected")
         } else {
-            view.post {
+            v.post {
                 viewModel.removeSelection()
                 val directions = HomeFragmentDirections.actionHomeFragmentToUpdateFragment(notes)
-                view.findNavController().navigate(directions)
+                v.findNavController().navigate(directions)
             }
         }
     }
@@ -245,37 +225,3 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         )
     }
 }
-
-/*
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.home_menu, menu)
-        val mMenuSearch = menu.findItem(R.id.title).actionView as SearchView
-        mMenuSearch.isSubmitButtonEnabled = false
-        mMenuSearch.setOnQueryTextListener(this)
-
-    }
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        searchNote(query)
-        return false
-    }
-    override fun onQueryTextChange(newText: String?): Boolean {
-        if (newText != null) {
-            searchNote(newText)
-        }
-        return true
-    }
-    private fun searchNote(query: String?) {
-        val searchQuery ="%$query"
-        myViewModel.searchnotes(searchQuery).observe(this ,{list->noteAdapter.differ.submitList(list)})
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null // Prevent memory leaks
-    }
-
-
-
- */

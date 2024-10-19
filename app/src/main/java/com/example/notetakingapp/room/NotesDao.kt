@@ -11,39 +11,45 @@ import androidx.room.Update
 interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertnotes(notes: Note)
+    suspend fun insertNote(notes: Note)
     @Update
-    suspend fun updatenotes(notes: Note)
+    suspend fun updateNote(notes: Note)
     @Delete
-    suspend fun deletenotes(notes: Note)
+    suspend fun deleteNote(notes: Note)
 
     @Query("DELETE FROM Notes_table WHERE noteId =:noteId ")
     suspend fun deleteNotesById(noteId:Int)
-    //////////////////////////
+
     @Query("UPDATE Notes_table SET isSelected = 0")
-    suspend fun deselectall()
-    //////////////////////////
+    suspend fun deselectAll()
+
     @Query("UPDATE Notes_table SET isSelected=:isSelected")
     fun updateAll(isSelected:Int)
-    //////////////////
+
     @Query("SELECT * FROM Notes_table WHERE isSelected = 1")
     fun getSelectedNotes(): LiveData<List<Note>>
-    ////////////////
+
    @Query("SELECT * FROM Notes_table")
-    fun getallnotes(): LiveData<List<Note>>
+    fun getAllNotes(): LiveData<List<Note>>
+
     @Query("SELECT * FROM Notes_table WHERE title LIKE :query OR  description LIKE :query " )
     fun searchNote(query:String?):LiveData<List<Note>>
-    @Query("UPDATE Notes_table SET image= :imageArray WHERE noteId=:noteId")
+
+    @Query("UPDATE Notes_table SET imagePath= :imageArray WHERE noteId=:noteId")
     suspend fun saveImage(imageArray: String, noteId: Int)
-    ////////////////
+
     @Query("UPDATE Notes_table SET isPinned=:isPinned WHERE noteId=:noteId")
     suspend fun updatePinStatus(noteId: Int, isPinned: Boolean)
-    //////////////////////////
-//    @Query("UPDATE Notes_table SET isSelected=:isSelected WHERE noteId=:noteId")
-//     fun  updateselectednotes(noteId: Int ,isSelected:Boolean):LiveData<List<Notes>>
 
     //This query will update all selected note records according to "isPinned" value
     @Query("UPDATE Notes_table SET isPinned =:isPinned WHERE noteId IN (:noteIds)")
     suspend fun updateIsPinnedColumn(noteIds: List<Int>, isPinned: Int)
 
+    // This query will update note priority and isHighPriorityVisible column by note ids
+    @Query("UPDATE Notes_table SET priority = :priority, isHighPriorityVisible = :isHighPriorityVisible WHERE noteId IN (:noteIds)")
+    suspend fun updatePriorityColumnInDB(noteIds: List<Int>, priority: Priority, isHighPriorityVisible: Int)
+
+    // This query will deletes multiple notes
+    @Query("DELETE FROM Notes_table WHERE noteId IN (:noteIds)")
+    suspend fun deleteNotesByIds(noteIds: List<Int>)
 }
