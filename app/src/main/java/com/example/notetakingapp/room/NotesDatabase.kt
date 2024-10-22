@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import kotlin.concurrent.Volatile
 
 @Database(
@@ -11,6 +12,7 @@ import kotlin.concurrent.Volatile
     version = 1,
 
 )
+@TypeConverters(PriorityConverter::class)
 abstract class NotesDatabase :RoomDatabase() {
     abstract val  db:NotesDao
     //val MIGRATION_1_2 = object : Migration(1, 2)

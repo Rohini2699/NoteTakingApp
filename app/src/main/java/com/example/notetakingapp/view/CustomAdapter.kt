@@ -1,9 +1,7 @@
-package com.example.notetak
-
+package com.example.notetakingapp.view
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,40 +19,17 @@ import com.example.notetakingapp.util.Utils.formatLocalDateTimeWithZoneId
 import java.time.ZoneId
 import java.util.Random
 
-class CustomAdapter(private val notes: List<Note>, private val listener: NoteClickListener) :
+class CustomAdapter(private val listener: NoteClickListener) :
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
-
-    //private var isHighPriorityVisible = false
 
     interface NoteClickListener {
         fun onItemClick(notes: Note, v: View, isLongClick: Boolean)
         fun onLongClicked(position: Int, notes: Note)
-       // fun onPinClick(position: Int ,)
-
     }
 
     inner class MyViewHolder(val binding: NoteLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-//        private varprivate lateinit var currentNotes: Notes
-//         isLongClickTriggered = false
-        /**
-        init {
 
-        itemView.setOnLongClickListener(this)
-        itemView.setOnClickListener(this)
-        }
-         **/
-//        @SuppressLint("SuspiciousIndentation")
-//        override fun onLongClick(v: View?): Boolean {
-//            isLongClickTriggered=true
-//          val position=bindingAdapterPosition
-//            if (position !=RecyclerView.NO_POSITION)
-//            {
-//                listener.onLongClicked(position)
-//                return true
-//            }
-//            return false
-//        }
         @SuppressLint("SuspiciousIndentation")
         fun bind(notes: Note, position: Int) {
             binding.notetitle.text = notes.title
@@ -77,37 +52,25 @@ class CustomAdapter(private val notes: List<Note>, private val listener: NoteCli
                 true
             }
         }
-//        override fun onClick(v: View?) {
-//            v?.let {
-//                listener.onItemClick(currentNotes, it , true)
-//            }
-//
-//        }
     }
 
-    // viewholder class is basically used for attatching the layout xml files
-    //var currentSelectedIndex = -1
-    //private var isLongClickTriggered = false
     private val differCallback = object : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
-            Log.d("DiffUtil", "Comparing items: ${oldItem.id} with ${newItem.id}")
             return oldItem.id == newItem.id
             // it is used to update the contents without modifying the entire dataset .
         }
 
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-            Log.d("DiffUtil", "Comparing contents: ${oldItem} with ${newItem}")
             return oldItem == newItem
         }
     }
+
     val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        // val layoutInflater = LayoutInflater.from(parent.context)
-        //   DataBindingUtil.inflate(layoutInflater, R.layout.card_item, parent, false)
-        val layoutinflator = LayoutInflater.from(parent.context)
+        val layoutInflater = LayoutInflater.from(parent.context)
         val binding: NoteLayoutBinding =
-            DataBindingUtil.inflate(layoutinflator, R.layout.note_layout, parent, false)
+            DataBindingUtil.inflate(layoutInflater, R.layout.note_layout, parent, false)
         return MyViewHolder(binding)
     }
 
@@ -117,12 +80,7 @@ class CustomAdapter(private val notes: List<Note>, private val listener: NoteCli
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentNotes = differ.currentList[position]
-//        Log.d("NoteAdapter", "Binding note: ${currentNotes.title}, position: $position")
-//        Log.d("NoteAdapter", "Binding note is pin : ${currentNotes.isPinned}, position: $position")
-        Log.d(
-            "NoteAdapter",
-            "Binding note is selected : ${currentNotes.isSelected}, position: $position"
-        )
+
         holder.bind(currentNotes, position)
         if (currentNotes.isSelected) {
             holder.binding.button.visibility = View.VISIBLE
@@ -141,7 +99,6 @@ class CustomAdapter(private val notes: List<Note>, private val listener: NoteCli
 
         holder.binding.card.setBackgroundColor(colors)
 
-
         if (currentNotes.isPinned) {
             holder.binding.pin.visibility = View.VISIBLE
 
@@ -149,35 +106,22 @@ class CustomAdapter(private val notes: List<Note>, private val listener: NoteCli
             holder.binding.pin.visibility = View.GONE
         }
 
-        if (currentNotes.priority != null) {
+        if (currentNotes.priority != Priority.NONE) {
             if (currentNotes.priority ==  Priority.LOW) {
                 holder.binding.lowpriority.isVisible = currentNotes.isHighPriorityVisible
+                holder.binding.cardview.setBackgroundColor(Color.GRAY)
                 holder.binding.highpriority.isVisible = false
             } else {
                 holder.binding.highpriority.isVisible = currentNotes.isHighPriorityVisible
+                holder.binding.cardview.setBackgroundColor(colors)
                 holder.binding.lowpriority.isVisible = false
             }
         } else {
             holder.binding.lowpriority.isVisible = false
             holder.binding.highpriority.isVisible = false
+            holder.binding.cardview.setBackgroundColor(Color.WHITE)
         }
     }
-
-//    fun markselecteditem(index: Int): Boolean {
-//            val selectedItem = differ.currentList[index]
-//            selectedItem.isSelected=!selectedItem.isSelected
-//        notifyDataSetChanged()
-//        return true
-//        }
-//        fun deselectedItem(index: Int) {
-//
-//           if(currentSelectedIndex == index){
-//               currentSelectedIndex=-1
-//               differ.currentList.get(index).isSelected=false
-//               notifyDataSetChanged()
-//           }
-//        }
-
 }
 
 

@@ -2,7 +2,6 @@ package com.example.notetakingapp.view
 
 import android.animation.Animator
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,6 +12,7 @@ import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import com.example.notetakingapp.R
@@ -36,7 +36,7 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _addNoteBinding = FragmentSecondaryfragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -85,7 +85,14 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
         val notedescription = binding.description.text.toString().trim()
         if (noteTitle.isNotEmpty()) {
             val notes =
-                Note(0, noteTitle, notedescription, isSelected = false, false , (System.currentTimeMillis()).toString())
+                Note(
+                    id = 0,
+                    title = noteTitle,
+                    description = notedescription,
+                    isSelected = false,
+                    isPinned = false,
+                    date = (System.currentTimeMillis()).toString()
+                )
             myViewModel.addNote(notes)
             Toast.makeText(mView.context, "Notes saved Successfully ", Toast.LENGTH_SHORT).show()
             view.findNavController().popBackStack(R.id.homeFragment, false)

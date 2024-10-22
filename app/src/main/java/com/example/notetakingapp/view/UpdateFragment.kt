@@ -1,9 +1,15 @@
 package com.example.notetakingapp.view
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.Menu
@@ -27,7 +33,7 @@ import com.example.notetakingapp.room.Note
 import com.example.notetakingapp.util.Utils.convertMillisToLocalDateTime
 import com.example.notetakingapp.util.Utils.formatLocalDateTimeWithZoneId
 import com.example.notetakingapp.viewmodel.NoteViewModel
-import java.io.ByteArrayOutputStream
+import java.io.File
 import java.time.ZoneId
 import java.util.Locale
 
@@ -41,6 +47,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
     private val binding get() = _binding!! // Assertion operator
     private lateinit var myViewModel: NoteViewModel
     private lateinit var currentNote: Note
+    private var imagePath: String? = null
 
     //Since the update note fragment contains arguments in nav _graph
     private val args: UpdateFragmentArgs by navArgs()
@@ -73,18 +80,30 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
         binding.editNoteTitle.setText(currentNote.title)
         binding.editNoteDesc.setText(currentNote.description)
 
+        //Load image from file path
+        if (currentNote.imagePath != null) {
+            imagePath= currentNote.imagePath?:""
+            val file = File(currentNote.imagePath!!)
+            BitmapFactory.decodeFile(file.absolutePath)?.let { bitmap ->
+                binding.image.setImageBitmap(bitmap)
+            }
+        }
+
         //if the user update the note
         binding.editNoteFab.setOnClickListener {
             val title = binding.editNoteTitle.text.toString().trim()
-            val body = binding.editNoteDesc.text.toString().trim()
+            val description = binding.editNoteDesc.text.toString().trim()
             if (title.isNotEmpty()) {
                 val note = Note(
-                    currentNote.id,
-                    title,
-                    body,
-                    currentNote.isSelected,
-                    currentNote.isPinned,
-                    (System.currentTimeMillis()).toString()
+                    id = currentNote.id,
+                    title = title,
+                    description = description,
+                    isSelected = currentNote.isSelected,
+                    isPinned = currentNote.isPinned,
+                    date = (System.currentTimeMillis()).toString(),
+                    priority=currentNote.priority,
+                    isHighPriorityVisible = currentNote.isHighPriorityVisible,
+                    imagePath = imagePath ?: ""
                 )
                 myViewModel.updateNotes(note)
                 view.findNavController().navigate(R.id.action_updateFragment_to_homeFragment)
@@ -106,12 +125,36 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
         }.create().show()
     }
 
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { galleryUri ->
-        if (galleryUri != null) {
-            binding.image.setImageURI(galleryUri)
-           // compressBitmapToByteArray()
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
+        if (imageUri != null) {
+            binding.image.setImageURI(imageUri)
+            saveImageToInternalStorage(imageUri = imageUri)
         } else {
             binding.image.isVisible = false
+        }
+    }
+
+    private fun saveImageToInternalStorage(imageUri: Uri) {
+        try {
+            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                // Use ImageDecoder for Android 9 (Pie) and above
+                ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, imageUri))
+            } else {
+                // Use the old method on older versions
+                @Suppress("DEPRECATION")
+                MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+            }
+            val fileName = "image_${System.currentTimeMillis()}.png"
+            requireContext().openFileOutput(fileName, Context.MODE_PRIVATE)?.use {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+            }
+
+            // Save the file path to the database
+            val filePath = "${requireContext().filesDir.absolutePath}/$fileName"
+            imagePath = filePath
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -146,26 +189,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
             binding.editNoteDesc.append(text)
         }
     }
-    fun compressBitmapToByteArray(originalBitmap: Bitmap, maxBytes: Long = 1_000_000): ByteArray {
-        // Initialize the quality variable and the output stream
-        var quality = 100
-        var byteArrayOutputStream: ByteArrayOutputStream
 
-        do {
-            // Reset the stream for each attempt at a different quality level
-            byteArrayOutputStream = ByteArrayOutputStream()
-
-            // Compress the bitmap into the ByteArrayOutputStream at the current quality
-            originalBitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
-
-            // Reduce the quality for the next iteration if the current size exceeds maxBytes
-            quality -= 5
-
-        } while (byteArrayOutputStream.size() > maxBytes && quality > 0)
-
-        // Return the byte array representing the compressed bitmap
-        return byteArrayOutputStream.toByteArray()
-    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
