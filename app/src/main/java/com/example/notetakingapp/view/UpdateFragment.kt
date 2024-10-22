@@ -82,6 +82,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
 
         //Load image from file path
         if (currentNote.imagePath != null) {
+            imagePath= currentNote.imagePath?:""
             val file = File(currentNote.imagePath!!)
             BitmapFactory.decodeFile(file.absolutePath)?.let { bitmap ->
                 binding.image.setImageBitmap(bitmap)
@@ -100,6 +101,8 @@ class UpdateFragment : Fragment(R.layout.fragment_update), MenuProvider {
                     isSelected = currentNote.isSelected,
                     isPinned = currentNote.isPinned,
                     date = (System.currentTimeMillis()).toString(),
+                    priority=currentNote.priority,
+                    isHighPriorityVisible = currentNote.isHighPriorityVisible,
                     imagePath = imagePath ?: ""
                 )
                 myViewModel.updateNotes(note)

@@ -109,14 +109,17 @@ class CustomAdapter(private val listener: NoteClickListener) :
         if (currentNotes.priority != Priority.NONE) {
             if (currentNotes.priority ==  Priority.LOW) {
                 holder.binding.lowpriority.isVisible = currentNotes.isHighPriorityVisible
+                holder.binding.cardview.setBackgroundColor(Color.GRAY)
                 holder.binding.highpriority.isVisible = false
             } else {
                 holder.binding.highpriority.isVisible = currentNotes.isHighPriorityVisible
+                holder.binding.cardview.setBackgroundColor(colors)
                 holder.binding.lowpriority.isVisible = false
             }
         } else {
             holder.binding.lowpriority.isVisible = false
             holder.binding.highpriority.isVisible = false
+            holder.binding.cardview.setBackgroundColor(Color.WHITE)
         }
     }
 }
