@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.example.notetakingapp.viewmodel.NoteViewModel" />
+            type="com.note.notetakingapp.viewmodel.NoteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="homefragment"
-            type="com.example.notetakingapp.viewmodel.NoteViewModel" />
+            type="com.note.notetakingapp.viewmodel.NoteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,7 +82,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_marginHorizontal="16dp"
-                android:text="@{String.valueOf(homefragment.selectedcounttext)}"
+                android:text="@{String.valueOf(homefragment.selectedCountText)}"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/selectall"
@@ -97,10 +97,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_shape"
-                android:onClick="@{()->homefragment.selectall()}"
+                android:onClick="@{()->homefragment.selectAllNotes()}"
                 android:padding="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="@={homefragment.selectalltext}"
+                android:text="@={homefragment.selectAllText}"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,6 +109,7 @@
                 tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -157,9 +158,11 @@
             app:itemIconSize="25dp"
             app:itemIconTint="@color/black"
             app:itemTextColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+            app:hideOnScroll="true"
+            app:layout_scrollFlags="scroll|enterAlways"
         app:menu="@menu/bottombar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
