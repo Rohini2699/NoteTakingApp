@@ -27,6 +27,17 @@ class NoteViewModel(private val repo: NotesRepository) : ViewModel(), Observable
 
     private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String> get() = _toastMessage
+    val users: LiveData<List<Note>> = repo.allnotes
+
+    private val _allNotesMutableList = MutableLiveData<List<Note>>(emptyList())
+    val allNotes: LiveData<List<Note>> = _allNotesMutableList
+
+    private var _selectedNotesList = MutableLiveData<List<Note>>(emptyList())
+    var selectedNotesList: LiveData<List<Note>> = _selectedNotesList
+
+    private val _toastMessage = MutableLiveData<String>()
+    val toastMessage: LiveData<String> get() = _toastMessage
+
 
     @Bindable
     val selectAllText = MutableLiveData<String>()
