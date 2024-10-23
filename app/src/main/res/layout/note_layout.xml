@@ -101,7 +101,7 @@
                 android:layout_below="@id/layout"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Date"
+                android:text="string/date"
                 android:textSize="12sp"
                 />
 

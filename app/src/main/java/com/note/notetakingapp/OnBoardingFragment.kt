@@ -1,5 +1,4 @@
 package com.note.notetakingapp
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import com.note.notetakingapp.util.Constants.PREF_KEY_ONBOARDING
 import com.note.notetakingapp.util.Constants.PREF_NAME
 import com.note.notetakingapp.view.ViewPageAdapter
 import com.note.notetakingapp.view.screens.FirstScreen
+import com.note.notetakingapp.view.screens.PriorityFragment
 import com.note.notetakingapp.view.screens.SecondScreen
 import com.note.notetakingapp.view.screens.ThirdScreen
 
@@ -35,6 +35,7 @@ class OnBoardingFragment : Fragment() {
         val fragmentList = arrayListOf(
             FirstScreen(),
             SecondScreen(),
+            PriorityFragment(),
             ThirdScreen()
         )
 
@@ -51,7 +52,7 @@ class OnBoardingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.run {
             tvNext.setOnClickListener {
-                if (viewPager.currentItem == 2) {
+                if (viewPager.currentItem == 3) {
                     val sharedPref = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                     sharedPref?.edit {
                         putBoolean(PREF_KEY_ONBOARDING, true)

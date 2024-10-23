@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="16dp"
-            android:text="Edit Note."
+            android:text="@string/edit_note"
             android:textStyle="bold"
             android:textColor="@color/red"
             android:textSize="24sp" />
@@ -25,7 +25,7 @@
             android:layout_below="@id/editNoteHeading"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Created Date"
+            android:text="@string/created_date"
             android:textSize="20sp" />
 
         <EditText
