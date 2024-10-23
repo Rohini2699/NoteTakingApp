@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.example.notetakingapp.OnBoardingFragment"
+        android:name="com.note.notetakingapp.OnBoardingFragment"
         android:label="fragment_on_boarding_fragmet"
         tools:layout="@layout/fragment_on_boarding_fragmet">
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.notetakingapp.view.HomeFragment"
+        android:name="com.note.notetakingapp.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/SecondaryFragment"
-        android:name="com.example.notetakingapp.view.NewNoteFragment"
+        android:name="com.note.notetakingapp.view.NewNoteFragment"
         android:label="fragment_SecondaryFragment"
         tools:layout="@layout/fragment_secondaryfragment">
         <action
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/updateFragment"
-        android:name="com.example.notetakingapp.view.UpdateFragment"
+        android:name="com.note.notetakingapp.view.UpdateFragment"
         android:label="fragment_update"
         tools:layout="@layout/fragment_update">
         <action
@@ -51,7 +51,7 @@
             app:destination="@id/homeFragment" />
         <argument
             android:name="notes"
-            app:argType="com.example.notetakingapp.room.Note"
+            app:argType="com.note.notetakingapp.room.Note"
             app:nullable="true" />
     </fragment>
 
