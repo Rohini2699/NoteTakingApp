@@ -6,7 +6,7 @@
     <data>
         <variable
             name="homefragment"
-            type="com.example.notetakingapp.viewmodel.NoteViewModel" />
+            type="com.note.notetakingapp.viewmodel.NoteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
