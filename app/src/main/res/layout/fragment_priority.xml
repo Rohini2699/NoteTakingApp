@@ -37,8 +37,8 @@
         android:textAlignment="center"
         android:text="@string/when_the_user_performs_a_long_click_on_a_note_a_bottom_navigation_bar_will_appear_allowing_them_to_assign_a_priority_level_to_the_note_such_as_high_or_low_priority"
         android:textSize="18sp"
-        android:textStyle="italic"
-        android:textColor="@color/colorPrimaryDark"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorOnSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView2" />
@@ -51,6 +51,7 @@
         android:layout_marginBottom="16dp"
         android:padding="20dp"
         android:text="Next"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="gone"
         android:textSize="20sp"
         android:textStyle="bold"

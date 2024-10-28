@@ -5,5 +5,5 @@
     <corners android:radius="16dp" />
     <stroke
         android:width="2dp"
-        android:color="@color/colorPrimary" /> <!-- Border color -->
+        android:color="@color/colorAccent" /> <!-- Border color -->
 </shape>

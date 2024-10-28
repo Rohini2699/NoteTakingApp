@@ -12,7 +12,7 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/search"
+        android:src="@drawable/notes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,8 +39,8 @@
         android:textAlignment="center"
         android:text="The user can refine their search by selecting the search icon on the top bar, and the search results will be displayed on the screen."
         android:textSize="18sp"
-        android:textStyle="italic"
-        android:textColor="@color/colorPrimaryDark"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorOnSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView2" />
