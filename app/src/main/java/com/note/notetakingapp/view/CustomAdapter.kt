@@ -17,7 +17,7 @@ import com.note.notetakingapp.room.Priority
 import com.note.notetakingapp.util.Utils.convertMillisToLocalDateTime
 import com.note.notetakingapp.util.Utils.formatLocalDateTimeWithZoneId
 import java.time.ZoneId
-import java.util.Random
+
 
 class CustomAdapter(private val listener: NoteClickListener) :
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
@@ -88,16 +88,8 @@ class CustomAdapter(private val listener: NoteClickListener) :
             holder.binding.button.visibility = View.GONE
         }
 
-        val random = Random()
-        val alpha = (128..255).random()
-        val colors = Color.argb(
-            alpha,
-            random.nextInt(256),
-            random.nextInt(256),
-            random.nextInt(256)
-        )
 
-        holder.binding.card.setBackgroundColor(colors)
+
 
         if (currentNotes.isPinned) {
             holder.binding.pin.visibility = View.VISIBLE

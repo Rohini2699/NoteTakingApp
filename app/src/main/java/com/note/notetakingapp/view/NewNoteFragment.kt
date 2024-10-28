@@ -1,6 +1,6 @@
 package com.note.notetakingapp.view
 
-import android.animation.Animator
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
@@ -48,19 +47,6 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        /*binding.lottieAnimationView.apply {
-            setAnimation("animation1.json") // Set the animation file
-            isVisible = true
-            playAnimation() // Start the animation
-
-            // Pause the animation after 3 seconds
-            postDelayed({
-                if (isAnimating) {
-                    pauseAnimation() // Pause the animation
-                    visibility = View.GONE // Hide the view if needed
-                }
-            }, 2000) // 3000 milliseconds = 3 seconds
-        }*/
 
     }
 

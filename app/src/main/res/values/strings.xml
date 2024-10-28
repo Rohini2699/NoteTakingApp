@@ -26,5 +26,8 @@
     <string name="created_date">Created Date</string>
     <string name="when_user_made_a_long_click_on_notes_user_can_view_the_bottom_navigation_menu_in_that_user_can_pin_the_notes">When user made a long click on Notes ,User can view the bottom navigation menu in that user can pin the notes.</string>
     <string name="when_the_user_performs_a_long_click_on_a_note_a_bottom_navigation_bar_will_appear_allowing_them_to_assign_a_priority_level_to_the_note_such_as_high_or_low_priority">When the user performs a long click on a note, a bottom navigation bar will appear, allowing them to assign a priority level to the note, such as high or low priority.</string>
+    <string name="lowpriority">lowpriority</string>
+    <string name="highpriority">highpriority</string>
+    <string name="pinname">pinname</string>
 </resources>
 
