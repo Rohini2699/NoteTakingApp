@@ -3,73 +3,76 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cardview"
-        app:cardElevation="8dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        app:cardCornerRadius="10dp">
+        >
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="10dp">
+
             <LinearLayout
                 android:id="@id/layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="end">
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
                 <ImageButton
                     android:id="@+id/lowpriority"
-                    android:layout_height="30dp"
                     android:layout_width="30dp"
-                    android:padding="8dp"
-                    android:visibility="gone"
+                    android:layout_height="30dp"
                     android:background="@drawable/baseline_low_priority_24"
-                    android:contentDescription="lowpriority"/>
+                    android:contentDescription="lowpriority"
+                    android:padding="8dp"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/highpriority"
-                    android:layout_height="30dp"
                     android:layout_width="30dp"
-                    android:padding="8dp"
-                    android:visibility="gone"
-                    android:backgroundTint="@color/red"
+                    android:layout_height="30dp"
                     android:background="@drawable/baseline_priority_high_24"
-                    android:contentDescription="highpriority"/>
+                    android:backgroundTint="@color/red"
+                    android:contentDescription="highpriority"
+                    android:padding="8dp"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/pin"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="5dp"
-                    android:visibility="gone"
-                    android:padding="8dp"
                     android:background="@drawable/baseline_push_pin_24"
                     android:contentDescription="pinname"
-                     />
+                    android:padding="8dp"
+                    android:visibility="gone" />
+
                 <CheckBox
                     android:id="@+id/button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="end"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
                     android:padding="10dp"
                     android:src="@drawable/baseline_done_24"
                     android:textColor="@color/black"
                     app:layout_constraintDimensionRatio="1:1" />
+
                 <View
                     android:id="@+id/card"
                     android:layout_width="21dp"
                     android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
+                    android:background="@drawable/sunsetgradient"
                     android:padding="10dp" />
             </LinearLayout>
 
@@ -85,15 +88,15 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="170dp"
-                android:id="@+id/description"
                 android:layout_marginRight="15dp"
+                android:maxHeight="170dp"
                 android:text="@string/type_something"
-                android:textSize="16sp"
                 android:textColor="@color/black"
-                ></TextView>
+                android:textSize="16sp"></TextView>
+
             <TextView
                 android:id="@+id/datetext"
                 android:layout_width="wrap_content"
@@ -102,10 +105,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="string/date"
-                android:textSize="12sp"
-                />
+                android:textSize="12sp" />
 
         </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    </androidx.cardview.widget.CardView>
 </layout>

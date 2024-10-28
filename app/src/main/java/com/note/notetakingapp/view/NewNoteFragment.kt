@@ -62,22 +62,6 @@ class NewNoteFragment : Fragment(R.layout.fragment_secondaryfragment), MenuProvi
             }, 2000) // 3000 milliseconds = 3 seconds
         }*/
 
-        binding.lottieAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(p0: Animator) {}
-
-            override fun onAnimationEnd(p0: Animator) {
-                binding.lottieAnimationView.isVisible = false
-            }
-
-            override fun onAnimationCancel(p0: Animator) {}
-
-            override fun onAnimationRepeat(p0: Animator) {}
-        })
-
-        // Add menu items without using the Fragment Menu APIs
-        // Note how we can tie the MenuProvider to the viewLifecycleOwner
-        // and an optional Lifecycle.State (here, RESUMED) to indicate when
-        // the menu should be visible
     }
 
     private fun savenote(view: View) {

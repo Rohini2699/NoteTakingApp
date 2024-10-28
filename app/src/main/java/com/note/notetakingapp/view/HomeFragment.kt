@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.airbnb.lottie.LottieAnimationView
 import com.note.notetakingapp.R
 import com.note.notetakingapp.databinding.FragmentHomeBinding
 import com.note.notetakingapp.room.Note
@@ -31,6 +32,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private lateinit var viewModel: NoteViewModel
     private lateinit var noteAdapter: CustomAdapter
     private var isAlreadyPinned: Boolean = false
+    private lateinit var animationView: LottieAnimationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
+
 
     }
 
@@ -56,6 +59,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
         setUpRecyclerView()
         setupObserver()
+        animationView = binding.emptynotes
+        // Optionally, set the animation file programmatically
+        animationView.setAnimation("noteanime.json") // Reference to the JSON file in assets
+        animationView.playAnimation() // Start the animation
 
         binding.fbutton.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_SecondaryFragment)
