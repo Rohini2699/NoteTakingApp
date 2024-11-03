@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#333333</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pink">#F88379</color>
     <color name ="red">#C95B6B</color>
@@ -12,6 +12,5 @@
         <color name="colorOnPrimary">#000000</color> <!-- Text color on top of primary -->
         <color name="colorOnSecondary">#000000</color> <!-- Text color on top of secondary -->
         <color name="colorError">#B00020</color> <!-- Error color for form validation -->
-
-
+         <color name="blue">#0091EA</color>
 </resources>

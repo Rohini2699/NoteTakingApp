@@ -30,9 +30,7 @@ class SplashFragment : Fragment() {
         Handler(Looper.getMainLooper()) .postDelayed({
             if (!isOnboardingComplete) {
                 // Navigate to the onboarding fragment to start the onboarding process
-                findNavController().navigate(
-                    R.id.action_splashFragment_to_onBoardingFragmet
-                )
+                findNavController().navigate(R.id.action_splashFragment_to_onBoardingFragmet)
             }
             else
             {
