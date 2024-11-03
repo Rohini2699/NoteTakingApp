@@ -1,5 +1,6 @@
 package com.note.notetakingapp.view
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieProperty
+import com.airbnb.lottie.model.KeyPath
 import com.note.notetakingapp.R
 import com.note.notetakingapp.databinding.FragmentHomeBinding
 import com.note.notetakingapp.room.Note
@@ -63,6 +66,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         // Optionally, set the animation file programmatically
         animationView.setAnimation("noteanime.json") // Reference to the JSON file in assets
         animationView.playAnimation() // Start the animation
+
 
         binding.fbutton.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_SecondaryFragment)
