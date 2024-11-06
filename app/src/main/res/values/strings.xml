@@ -29,5 +29,9 @@
     <string name="lowpriority">lowpriority</string>
     <string name="highpriority">highpriority</string>
     <string name="pinname">pinname</string>
+    <string name="welcome">Welcome</string>
+    <string name="login">Login</string>
+    <string name="skip">skip</string>
+    <string name="images">images</string>
 </resources>
 
