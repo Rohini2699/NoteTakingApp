@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.note.notetakingapp" />
+                  <option name="mobileSdkAppId" value="1:556797790148:android:ba6860df77a2cf7b790691" />
+                  <option name="projectId" value="notetakingapp-4a0ae" />
+                  <option name="projectNumber" value="556797790148" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -62,6 +62,7 @@ dependencies {
     // Room Database
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("androidx.room:room-runtime:2.6.1")
+
     implementation("com.google.firebase:firebase-database:21.0.0")
     implementation("com.google.firebase:firebase-messaging:24.0.3")
     implementation("com.google.firebase:firebase-storage:21.0.1")

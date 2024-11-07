@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pink">#F88379</color>
     <color name ="red">#C95B6B</color>
+    <color name="blue">#0091EA</color>
     <color name = "turquoise">#00BFAE</color>
         <color name="colorPrimary">#F85E40</color> <!-- Bright Orange Red -->
         <color name="colorPrimaryVariant">#D595E6</color> <!-- Deep Pink -->

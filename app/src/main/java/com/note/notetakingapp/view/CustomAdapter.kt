@@ -88,9 +88,6 @@ class CustomAdapter(private val listener: NoteClickListener) :
             holder.binding.button.visibility = View.GONE
         }
 
-
-
-
         if (currentNotes.isPinned) {
             holder.binding.pin.visibility = View.VISIBLE
 
