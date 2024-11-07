@@ -31,7 +31,10 @@
     <string name="pinname">pinname</string>
     <string name="welcome">Welcome</string>
     <string name="login">Login</string>
-    <string name="skip">skip</string>
+    <string name="skip">Skip</string>
     <string name="images">images</string>
+    <string name="username">username</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Prompt</string>
 </resources>
 
