@@ -16,11 +16,7 @@ import com.note.notetakingapp.view.screens.PriorityFragment
 import com.note.notetakingapp.view.screens.SecondScreen
 import com.note.notetakingapp.view.screens.ThirdScreen
 
-/**
- * A simple [Fragment] subclass.
- * Use the [OnBoardingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class OnBoardingFragment : Fragment() {
 
     private var binding: FragmentOnBoardingFragmetBinding? = null
@@ -39,7 +35,7 @@ class OnBoardingFragment : Fragment() {
             ThirdScreen()
         )
 
-        val adapter = ViewPageAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
+        val adapter = ViewPageAdapter(fragmentList, childFragmentManager, lifecycle)
         binding?.run {
             viewPager.adapter = adapter
             dotindicator.attachTo(viewPager)

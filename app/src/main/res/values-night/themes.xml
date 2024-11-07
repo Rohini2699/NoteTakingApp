@@ -1,11 +1,17 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources >
     <!-- Base application theme. -->
     <style name="Base.Theme.NoteTakingApp" parent="Theme.AppCompat.Light.DarkActionBar">
 
             <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorSecondary">@color/colorPrimary</item>
             <item name="android:windowBackground">@color/white</item>
+        <item name="actionBarTheme">@style/CustomActionBarTheme</item>
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+    <style name="CustomActionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/colorOnPrimary</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textColorHint">@color/colorOnPrimary</item>
     </style>
 </resources>

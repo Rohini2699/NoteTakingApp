@@ -15,8 +15,8 @@ android {
         applicationId = "com.note.notetakingapp"
         minSdk = 27
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -62,6 +62,10 @@ dependencies {
     // Room Database
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("androidx.room:room-runtime:2.6.1")
+
+    implementation("com.google.firebase:firebase-database:21.0.0")
+    implementation("com.google.firebase:firebase-messaging:24.0.3")
+    implementation("com.google.firebase:firebase-storage:21.0.1")
     implementation("com.google.firebase:firebase-auth:23.1.0")
     // glide
 

@@ -120,14 +120,15 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/emptynotes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_centerInParent="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="gone"
+            android:shadowColor="@color/colorError"
             app:lottie_autoPlay="true"
             app:lottie_fileName="noteanime.json"
             app:lottie_loop="true" />
